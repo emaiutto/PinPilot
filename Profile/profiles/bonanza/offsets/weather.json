@@ -1,0 +1,15 @@
+{
+	
+	"Total_Air_Temperature":{ "Address": 0x11D0, "DataType": "Int16", "Factor": 0.00390625 },
+
+	"OutsideAirTemperature":{ "Address": 0x0E8C, "DataType": "Int16", "Factor": 0.00390625 },
+	
+	"Pressure":				{ "Address": 0x0F48, "DataType": "UInt16", "Factor": 0.0625 },
+	
+	"AmbientWindSpeed":		{ "Address": 0x0E90, "DataType": "UInt16" },
+
+	"AmbientWindDirection":	{ "Address": 0x0E92, "DataType": "UInt16", "Factor": 0.0054931640625 },
+
+	"IsRainingDay":			{ "Address": 0x04CC, "DataType": "Byte" }, // BOOLEAN
+
+}

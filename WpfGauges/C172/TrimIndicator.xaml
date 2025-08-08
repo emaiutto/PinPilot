@@ -1,0 +1,15 @@
+﻿<UserControl x:Class="MauiSoft.SRP.Gauges.Generics.TrimIndicator"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MauiSoft.SRP.Gauges.Generics"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="100" SizeChanged="UserControl_SizeChanged">
+    
+    <Grid Style="{DynamicResource GridStyle1}" Background="CornflowerBlue">
+        <Label Style="{DynamicResource LabelStyle}" x:Name="title" Content="Trim" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" />
+        <Label Style="{DynamicResource LabelStyle}" x:Name="value" Content="000" HorizontalAlignment="Center" Margin="0,50,0,0" VerticalAlignment="Center" />
+    </Grid>
+    
+</UserControl>

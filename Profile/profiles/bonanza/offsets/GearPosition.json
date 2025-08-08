@@ -1,0 +1,18 @@
+{
+
+    "GearPosition_Nose": {
+        "Address": 0x0BEC,
+        "DataType": "UInt16"
+    },
+
+    "GearPosition_Right": {
+        "Address": 0x0BF0,
+        "DataType": "UInt16"
+    },
+
+    "GearPosition_Left": {
+        "Address": 0x0BF4,
+        "DataType": "UInt16"
+    }
+
+}

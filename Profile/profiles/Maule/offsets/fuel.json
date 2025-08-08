@@ -1,0 +1,16 @@
+{
+
+    "FuelLeftWingTank": {
+        "Address": 0x0B7C,
+        "DataType": "Single",
+        "Factor": 1
+
+    },
+
+    "FuelRightWingTank": {
+        "Address": 0x0B94,
+        "DataType": "Single",
+        "Factor": 1
+    }
+
+}

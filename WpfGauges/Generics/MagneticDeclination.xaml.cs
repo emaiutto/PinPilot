@@ -1,0 +1,40 @@
+﻿using MauiSoft.SRP.FsuipcWrapper;
+
+namespace MauiSoft.SRP.Gauges.Generics
+{
+
+    public partial class MagneticDeclination : UserControl
+    {
+        private readonly string[] _offsets;
+        public MagneticDeclination()
+        {
+            InitializeComponent();
+
+            _offsets = Gauge.Instance.GetOffsets(GetType().Name) ?? [];
+
+            title.Content = Gauge.Instance.GetLabel(GetType().Name);
+        }
+
+        protected override void OnRender(DrawingContext drawingContext)
+        {
+            base.OnRender(drawingContext); // nunca lo omitas si no dibujás nada custom
+
+
+
+
+            double temp = Math.Round(OffsetList.Instance.GetValue(_offsets[0]), 0);
+            
+            char literal = (double)temp >= 0 ? 'E' : 'W';
+
+            value.Content = $"{Math.Abs((double)temp):0}° {literal}";
+            
+
+        }
+
+        private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            title.FontSize = Width * FontSizeHelpers.Small;
+            value.FontSize = Width * FontSizeHelpers.Medium;
+        }
+    }
+}

@@ -1,0 +1,26 @@
+{
+
+	"Fuel_Total": {
+		"Address": 0x1264,
+		"DataType": "Int16",
+		"Factor": 1,
+	},
+
+	"Parking_Break": {
+		"Address": 0x0BC8,
+		"DataType": "Int16"
+	},
+
+	"Kohlsman": {
+		"Address": 0x0330,
+		"DataType": "UInt16",
+		"Factor": 0.0625
+	},
+
+	"ELEVATOR_TRIM": {
+		"Address": 0x2EA0,
+		"DataType": "Double",
+		"Factor": 57.2957795130
+	}, // GRADOS SEXAGESIMALES
+
+}

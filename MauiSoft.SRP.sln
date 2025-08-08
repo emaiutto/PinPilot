@@ -1,0 +1,106 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33414.496
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{30387023-89E3-42B5-A26F-5FCFB316DDAC}"
+	ProjectSection(SolutionItems) = preProject
+		airplane.ico = airplane.ico
+		LICENSE.txt = LICENSE.txt
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauiSoft.SRP.Gauges", "WpfGauges\MauiSoft.SRP.Gauges.csproj", "{B01CFFA7-EB28-413C-8A9D-C6A1182D6AA2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauiSoft.SRP.Main", "Main\MauiSoft.SRP.Main.csproj", "{A6B1D570-D56C-4226-B3BF-4ACEE188C5D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiSoft.SRP.McpLibrary", "McpLibrary\MauiSoft.SRP.McpLibrary.csproj", "{DE921C71-BEDD-F85C-35FA-774B9E3F1F72}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		Libs\fsuipcClient.dll = Libs\fsuipcClient.dll
+		Libs\MauiSoft.SRP.ArduinoComm.dll = Libs\MauiSoft.SRP.ArduinoComm.dll
+		Libs\MauiSoft.SRP.Audio.dll = Libs\MauiSoft.SRP.Audio.dll
+		Libs\MauiSoft.SRP.FsuipcWrapper.dll = Libs\MauiSoft.SRP.FsuipcWrapper.dll
+		Libs\MauiSoft.SRP.GeoTools.dll = Libs\MauiSoft.SRP.GeoTools.dll
+		Libs\MauiSoft.SRP.Helpers.dll = Libs\MauiSoft.SRP.Helpers.dll
+		Libs\MauiSoft.SRP.Logger.dll = Libs\MauiSoft.SRP.Logger.dll
+		Libs\MauiSoft.SRP.MyExtensions.dll = Libs\MauiSoft.SRP.MyExtensions.dll
+		Libs\MauiSoft.SRP.SaitekLibrary.dll = Libs\MauiSoft.SRP.SaitekLibrary.dll
+		Libs\TinyHIDLibrary.dll = Libs\TinyHIDLibrary.dll
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{9FB97EB8-3DC8-43F0-BAB4-9304EDD80554}"
+	ProjectSection(SolutionItems) = preProject
+		C172 checklist.odg = C172 checklist.odg
+		FSUIPC4 Offsets Status.pdf = FSUIPC4 Offsets Status.pdf
+		Offset Mapping for PMDG 737NGX.pdf = Offset Mapping for PMDG 737NGX.pdf
+		The 2016 List of FSX and P3D Controls.pdf = The 2016 List of FSX and P3D Controls.pdf
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiSoft.SRP.SaitekLibrary", "SaitekLibrary\MauiSoft.SRP.SaitekLibrary.csproj", "{F8E215AD-F7D1-DDED-3FDC-A7979E9D511C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiSoft.SRP.Audio", "MauiSoft.SRP.Audio\MauiSoft.SRP.Audio.csproj", "{F1AC4023-0480-DEFB-8093-2AA7AD33E39E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiSoft.SRP.Profile", "Profile\MauiSoft.SRP.Profile.csproj", "{20662D6B-6024-1C03-5ECE-DACC885E0CC1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiSoft.SRP.FsuipcWrapper", "FsuipcWrapper\MauiSoft.SRP.FsuipcWrapper.csproj", "{DDFCAAA9-D93C-B79F-935D-AFDD02A16052}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{0A1E64AE-D0ED-E6EE-0445-2888C87C6BF3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyHIDLibrary", "TinyHIDLibrary\TinyHIDLibrary.csproj", "{03DB3244-DF67-7C6E-5072-6B4628537004}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B01CFFA7-EB28-413C-8A9D-C6A1182D6AA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B01CFFA7-EB28-413C-8A9D-C6A1182D6AA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B01CFFA7-EB28-413C-8A9D-C6A1182D6AA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B01CFFA7-EB28-413C-8A9D-C6A1182D6AA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6B1D570-D56C-4226-B3BF-4ACEE188C5D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6B1D570-D56C-4226-B3BF-4ACEE188C5D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6B1D570-D56C-4226-B3BF-4ACEE188C5D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6B1D570-D56C-4226-B3BF-4ACEE188C5D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE921C71-BEDD-F85C-35FA-774B9E3F1F72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE921C71-BEDD-F85C-35FA-774B9E3F1F72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE921C71-BEDD-F85C-35FA-774B9E3F1F72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE921C71-BEDD-F85C-35FA-774B9E3F1F72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8E215AD-F7D1-DDED-3FDC-A7979E9D511C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8E215AD-F7D1-DDED-3FDC-A7979E9D511C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8E215AD-F7D1-DDED-3FDC-A7979E9D511C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8E215AD-F7D1-DDED-3FDC-A7979E9D511C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1AC4023-0480-DEFB-8093-2AA7AD33E39E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1AC4023-0480-DEFB-8093-2AA7AD33E39E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1AC4023-0480-DEFB-8093-2AA7AD33E39E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1AC4023-0480-DEFB-8093-2AA7AD33E39E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20662D6B-6024-1C03-5ECE-DACC885E0CC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20662D6B-6024-1C03-5ECE-DACC885E0CC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20662D6B-6024-1C03-5ECE-DACC885E0CC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20662D6B-6024-1C03-5ECE-DACC885E0CC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDFCAAA9-D93C-B79F-935D-AFDD02A16052}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDFCAAA9-D93C-B79F-935D-AFDD02A16052}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDFCAAA9-D93C-B79F-935D-AFDD02A16052}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDFCAAA9-D93C-B79F-935D-AFDD02A16052}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A1E64AE-D0ED-E6EE-0445-2888C87C6BF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A1E64AE-D0ED-E6EE-0445-2888C87C6BF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A1E64AE-D0ED-E6EE-0445-2888C87C6BF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A1E64AE-D0ED-E6EE-0445-2888C87C6BF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03DB3244-DF67-7C6E-5072-6B4628537004}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03DB3244-DF67-7C6E-5072-6B4628537004}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03DB3244-DF67-7C6E-5072-6B4628537004}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03DB3244-DF67-7C6E-5072-6B4628537004}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {30387023-89E3-42B5-A26F-5FCFB316DDAC}
+		{9FB97EB8-3DC8-43F0-BAB4-9304EDD80554} = {30387023-89E3-42B5-A26F-5FCFB316DDAC}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {567D543D-F90A-4A8C-BED7-3C751A536EA3}
+	EndGlobalSection
+EndGlobal

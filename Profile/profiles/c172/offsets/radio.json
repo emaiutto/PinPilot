@@ -1,0 +1,19 @@
+{
+
+	"COM1_Active":			{ "Address": 0x034E, "DataType": "UInt16", "Frecuency": true },
+
+	"COM1_StandBy":			{ "Address": 0x311A, "DataType": "UInt16", "Frecuency": true },
+
+	"COM2_Active":			{ "Address": 0x3118, "DataType": "UInt16", "Frecuency": true },
+
+	"COM2_StandBy":			{ "Address": 0x311C, "DataType": "UInt16", "Frecuency": true },
+
+	"NAV1_Active":			{ "Address": 0x0350, "DataType": "UInt16", "Frecuency": true },
+
+	"NAV1_StandBy":			{ "Address": 0x311E, "DataType": "UInt16", "Frecuency": true },
+
+	"NAV2_Active":			{ "Address": 0x0352, "DataType": "UInt16", "Frecuency": true },
+
+	"NAV2_StandBy":			{ "Address": 0x3120, "DataType": "UInt16", "Frecuency": true }
+
+}

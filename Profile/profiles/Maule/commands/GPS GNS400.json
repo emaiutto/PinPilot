@@ -1,0 +1,31 @@
+{
+
+    // GPS GNS400
+
+    "MCP_CRSL_BUTTON": { "Command": 66604 }, // NRST BUTTON
+
+    "MCP_SPD_BUTTON": { "Command": 66605 }, // OBS BUTTON
+
+    "MCP_HDGSEL_BUTTON": { "Command": 66606 }, // MSG BUTTON
+
+    "MCP_ALTHLD_BUTTON": { "Command": 66609 }, // FLIGHTPLAN BUTTON
+
+    "MCP_VS_BUTTON": { "Command": 66611 }, // TERRAIN BUTTON
+
+    "MCP_CRSR_BUTTON": { "Command": 66612 }, // PROCEDURE BUTTON
+
+
+
+    "MCP_CRSR_INC": { "Command": 66615 }, // GPS ZOOMIN BUTTON
+    "MCP_CRSR_DEC": { "Command": 66616 }, // GPS ZOOMOUT BUTTON
+
+    "MCP_ALTITUDE_INC": { "Command": 66625 }, // GPS GROUP KNOB INC
+    "MCP_ALTITUDE_DEC": { "Command": 66626 }, // GPS GROUP KNOB DEC
+
+    "MCP_VERSPEED_INC": { "Command": 66628 }, // GPS PAGE KNOB INC
+    "MCP_VERSPEED_DEC": { "Command": 66627 }, // GPS PAGE KNOB DEC
+
+    "MCP_CMD_BUTTON": { "Command": 66617 }, // GPS DIRECTTO BUTTON
+    "MCP_CWS_BUTTON": { "Command": 66623 }, // GPS ENTER BUTTON
+
+}

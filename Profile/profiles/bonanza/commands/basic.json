@@ -1,0 +1,14 @@
+{
+
+	"MCP_FlapsUp": { "Command": 65759 },
+	"MCP_FlapsDown": { "Command": 65758 },
+
+	"GearController_GearUp": { "Command": 66079 },
+	"GearController_GearDown": { "Command": 66080 },
+
+	"MCP_ELEVATOR_TRIM_UP": { "Command": 65615 },
+	"MCP_ELEVATOR_TRIM_DW": { "Command": 65607 },
+
+	"AXIS_THROTTLE_SET": { "Command": 65765 }
+
+}

@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0-windows10.0.19041.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>none</ErrorReport>
+    <Authors>Esteban Maiutto</Authors>
+    <Product>SRP</Product>
+    <Company>Maui Soft</Company>
+    <PackageTags>Saitek;Radio;Flight Simulator</PackageTags>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <WarningLevel>6</WarningLevel>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <WarningLevel>6</WarningLevel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FsuipcWrapper\MauiSoft.SRP.FsuipcWrapper.csproj" />
+    <ProjectReference Include="..\Profile\MauiSoft.SRP.Profile.csproj" />
+    <ProjectReference Include="..\TinyHIDLibrary\TinyHIDLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="MauiSoft.SRP.Helpers">
+      <HintPath>..\Libs\MauiSoft.SRP.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="MauiSoft.SRP.MyExtensions">
+      <HintPath>..\Libs\MauiSoft.SRP.MyExtensions.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="System.Diagnostics" />
+    <Using Include="System.Globalization" />
+  </ItemGroup>
+
+</Project>

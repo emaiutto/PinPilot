@@ -1,0 +1,44 @@
+﻿{
+	"LocalTime": { "Label": "Clock",
+		"Data": [ "LocalTimeHourFS", "LocalTimeMinuteFS", "ZuluTimeHourFS", "ZuluTimeMinuteFS", "GMT_offset" ]
+	},
+
+	"CurrentAirport": { "Data": [ "CurrentAirport" ], "Label": "ICAO" },
+
+	"GPS": { "Data": [ "GPS_Latitude", "GPS_Longitude" ] },
+
+	"OnGround": {
+		"Data": [ "ON_GROUND", "Parking_Break", "GroundAltitudeFeets" ]
+	},
+
+	"Pressure": { "Data": [ "Pressure" ], "Label": "Pressure (HPA)" },
+
+	"Kohlsman": { "Data": [ "Kohlsman" ], "Label": "Kohlsman (HPA)" },
+
+	"AirTemperature": {
+		"Data": [ "OutsideAirTemperature", "Total_Air_Temperature" ],
+		"Label": "Air Temperature °C"
+	},
+
+	"MagneticHeading": {
+		"Data": [ "MagneticDeclination", "TrueHeading" ],
+		"Label": "Magnetic\nHeading"
+	},
+
+	"MagneticDeclination": { "Data": [ "MagneticDeclination" ], "Label": "Magnetic\nDeclination" },
+
+	"TrueHeading": { "Data": [ "TrueHeading" ], "Label": "True Heading" },
+
+	"Wind": {
+		"Data": [ "AmbientWindDirection", "MagneticDeclination", "TrueHeading", "AmbientWindSpeed" ],
+	},
+
+	"TrimIndicator": { "Data": [ "ELEVATOR_TRIM" ], "Label": "Trim Indicator" },
+
+	"FuelTotal": { "Data": [ "FuelLeftWingTank", "FuelRightWingTank", "LeftFuelSelC172", "RightFuelSelC172" ] },
+	 
+	"VerticalSpeed": { "Data": [ "VerticalSpeed" ] },
+
+	"Tachometer": { "Data": [ "Eng1_RPM" ] },
+
+}

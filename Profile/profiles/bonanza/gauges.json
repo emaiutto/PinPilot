@@ -1,0 +1,56 @@
+﻿{
+    "OnGround": {
+        "Data": [ "ON_GROUND", "Parking_Break", "RadioAltitudeMeters" ]
+    },
+
+    "GPS": {
+        "Data": [ "GPS_Latitude", "GPS_Longitude" ]
+    },
+
+    "CurrentAirport": {
+        "Data": [ "CurrentAirport" ],
+        "Label": "ICAO"
+    },
+
+    "GroundAltitude": {
+        "Data": [ "GroundAltitudeFeets" ],
+        "Label": "Elevation"
+    },
+
+    "AirTemperature": {
+        "Data": [ "OutsideAirTemperature", "Total_Air_Temperature" ],
+        "Label": "Air Temperature °C"
+    },
+
+    "Pressure": {
+        "Data": [ "Pressure" ],
+        "Label": "Pressure"
+    },
+
+    "Kohlsman": {
+        "Data": [ "Kohlsman" ],
+        "Label": "Kohlsman"
+    },
+
+    "MagneticHeading": {
+        "Data": [ "MagneticDeclination", "TrueHeading" ],
+        "Label": "Magnetic\nHeading"
+    },
+
+    "MagneticDeclination": {
+        "Data": [ "MagneticDeclination" ],
+        "Label": "Magnetic\nDeclination"
+    },
+
+    "TrueHeading": {
+        "Data": [ "TrueHeading" ],
+        "Label": "True Heading"
+    },
+
+    "GearPosition": {
+        "Data": [ "GearPosition_Nose", "GearPosition_Right", "GearPosition_Left" ]
+    },
+
+
+
+}

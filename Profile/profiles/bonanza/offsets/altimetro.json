@@ -1,0 +1,18 @@
+{
+
+	//"Altimetro": {
+	//	"Address": 0x8670,
+	//	"DataType": "Int32",
+	//	"Factor": 3.28084
+	//}
+
+	// Altitud en Metros ONLY P3DV4 (Int32)
+
+	//Pressure Altitude
+	"Altimetro": {
+		"Address": 0x34B0,
+		"DataType": "Double",
+		"Factor": 3.28084
+	}
+
+}
