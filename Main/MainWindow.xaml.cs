@@ -25,9 +25,10 @@ namespace MauiSoft.SRP
     public partial class MainWindow : Window
     {
 
+
         readonly DispatcherTimer timerProfile = new() { Interval = TimeSpan.FromMilliseconds(1000) };
 
-        readonly DispatcherTimer timerDisplay = new() { Interval = TimeSpan.FromMilliseconds(100) };
+        readonly DispatcherTimer timerDisplay = new() { Interval = TimeSpan.FromMilliseconds(100) }; // 10 FPS.
 
 
         RadioPanel? RadioPanel;
@@ -69,10 +70,22 @@ namespace MauiSoft.SRP
 
         #region SAITEK EVENTS
 
+        private DateTime _lastExecution = DateTime.MinValue;
+        private readonly TimeSpan _minInterval = TimeSpan.FromMilliseconds(100);
+
+        private bool CanExecute()
+        {
+            if (DateTime.UtcNow - _lastExecution < _minInterval)
+                return false;
+
+            _lastExecution = DateTime.UtcNow;
+            return true;
+        }
 
         private void SaitekRadioPanel_EnconderB1R()
         {
             if (RadioPanel == null) return;
+            if (!CanExecute()) return;
 
             var cmd = Config.Instance.Get(RadioPanel.Switches[0])?.BRR?.FirstOrDefault();
             if (cmd == null) return;
@@ -84,6 +97,7 @@ namespace MauiSoft.SRP
         private void SaitekRadioPanel_EnconderB1L()
         {
             if (RadioPanel == null) return;
+            if (!CanExecute()) return;
 
             var cmd = Config.Instance.Get(RadioPanel.Switches[0])?.BRL?.FirstOrDefault();
             if (cmd == null) return;
@@ -92,10 +106,10 @@ namespace MauiSoft.SRP
             AudioPlayer.Play("switch_small.wav");
         }
 
-
         private void SaitekRadioPanel_EnconderS1R()
         {
             if (RadioPanel == null) return;
+            if (!CanExecute()) return;
 
             var cmd = Config.Instance.Get(RadioPanel.Switches[0])?.SRR?.FirstOrDefault();
             if (cmd == null) return;
@@ -104,10 +118,10 @@ namespace MauiSoft.SRP
             AudioPlayer.Play("switch_small.wav");
         }
 
-
         private void SaitekRadioPanel_EnconderS1L()
         {
             if (RadioPanel == null) return;
+            if (!CanExecute()) return;
 
             var cmd = Config.Instance.Get(RadioPanel.Switches[0])?.SRL?.FirstOrDefault();
             if (cmd == null) return;
@@ -116,10 +130,10 @@ namespace MauiSoft.SRP
             AudioPlayer.Play("switch_small.wav");
         }
 
-
         private void SaitekRadioPanel_EnconderB2R()
         {
             if (RadioPanel == null) return;
+            if (!CanExecute()) return;
 
             var cmd = Config.Instance.Get(RadioPanel.Switches[1])?.BRR?.FirstOrDefault();
             if (cmd == null) return;
@@ -128,10 +142,10 @@ namespace MauiSoft.SRP
             AudioPlayer.Play("switch_small.wav");
         }
 
-
         private void SaitekRadioPanel_EnconderB2L()
         {
             if (RadioPanel == null) return;
+            if (!CanExecute()) return;
 
             var cmd = Config.Instance.Get(RadioPanel.Switches[1])?.BRL?.FirstOrDefault();
             if (cmd == null) return;
@@ -140,10 +154,10 @@ namespace MauiSoft.SRP
             AudioPlayer.Play("switch_small.wav");
         }
 
-
         private void SaitekRadioPanel_EnconderS2R()
         {
             if (RadioPanel == null) return;
+            if (!CanExecute()) return;
 
             var cmd = Config.Instance.Get(RadioPanel.Switches[1])?.SRR?.FirstOrDefault();
             if (cmd == null) return;
@@ -152,10 +166,10 @@ namespace MauiSoft.SRP
             AudioPlayer.Play("switch_small.wav");
         }
 
-
         private void SaitekRadioPanel_EnconderS2L()
         {
             if (RadioPanel == null) return;
+            if (!CanExecute()) return;
 
             var cmd = Config.Instance.Get(RadioPanel.Switches[1])?.SRL?.FirstOrDefault();
             if (cmd == null) return;
@@ -164,10 +178,10 @@ namespace MauiSoft.SRP
             AudioPlayer.Play("switch_small.wav");
         }
 
-
         private void SaitekRadioPanel_Buttons1()
         {
             if (RadioPanel == null) return;
+            if (!CanExecute()) return;
 
             var cmd = Config.Instance.Get(RadioPanel.Switches[0])?.BTN?.FirstOrDefault();
             if (cmd == null) return;
@@ -179,6 +193,7 @@ namespace MauiSoft.SRP
         private void SaitekRadioPanel_Buttons2()
         {
             if (RadioPanel == null) return;
+            if (!CanExecute()) return;
 
             var cmd = Config.Instance.Get(RadioPanel.Switches[1])?.BTN?.FirstOrDefault();
             if (cmd == null) return;
@@ -188,6 +203,9 @@ namespace MauiSoft.SRP
         }
 
         #endregion
+
+
+
 
 
         #region MCP EVENTS
@@ -434,7 +452,7 @@ namespace MauiSoft.SRP
 
 
 
-        static int countDisplay = 0;
+        //static int countDisplay = 0;
 
         private void TimerDisplay_Tick(object? sender, EventArgs e)
         {
@@ -443,18 +461,10 @@ namespace MauiSoft.SRP
 
                 // HIGH PRIORITY UPDATE - IMPORTANTE ACTUALIZAR SIEMPRE
                 FSUIPCHelper.Update();
-
-
-                // LOW PRIORITY
-                if (countDisplay % 2 == 0)
-                {
-                    foreach (Control c in wrappanel1.Children) c.InvalidateVisual();
-
-                }
+                
+                foreach (Control c in wrappanel1.Children) c.InvalidateVisual();
 
                 RadioPanel?.Update();
-
-                countDisplay++;
 
             }
             catch (Exception ex)

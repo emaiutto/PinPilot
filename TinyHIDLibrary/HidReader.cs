@@ -12,7 +12,7 @@
 
         private bool _running = false;
 
-        public HidReader(int VendorId, int ProductId, Func<Task> onReadSuccess, int delayMs = 5)
+        public HidReader(int VendorId, int ProductId, Func<Task> onReadSuccess, int delayMs = 20)
         {
             _device = HidDevices.GetDevice(VendorId, ProductId);
 
@@ -21,7 +21,7 @@
             _delayMs = delayMs;
         }
 
-        public HidReader(int VendorId, int ProductId, Func<Task> onReadSuccess, string VirtualDevice, int delayMs = 5)
+        public HidReader(int VendorId, int ProductId, Func<Task> onReadSuccess, string VirtualDevice, int delayMs = 20)
         {
             _device = HidDevices.Enumerate(VendorId, ProductId).Where(dev => dev.DevicePath.Contains(VirtualDevice)).First();
 

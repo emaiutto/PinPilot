@@ -58,7 +58,7 @@ namespace MauiSoft.SRP.FsuipcWrapper
         //static readonly Offset<string> _luaCommand = new("LuaCmd", 0x0D70, 40, true);
           
 
-        public int Count => _Dictionary.Count;
+        //public int Count => _Dictionary.Count;
 
         public static void Open()
         {
@@ -114,7 +114,7 @@ namespace MauiSoft.SRP.FsuipcWrapper
 
             Update();
 
-            Thread.Sleep(50);
+            //Thread.Sleep(50);
 
             _sendControl.Value = 0;
             

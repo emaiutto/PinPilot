@@ -132,14 +132,16 @@ namespace MauiSoft.SRP.SaitekLibrary
         }
 
 
+     
         public void Update()
         {
-            for (int i = 0; i <= 3; i++) SetDisplay(i);
-
+            SetDisplay(0);
+            SetDisplay(1);
+            SetDisplay(2);
+            SetDisplay(3);
         }
 
 
- 
         private Task OnReport()
         {
             if (Reader?.Device == null)
@@ -352,9 +354,10 @@ namespace MauiSoft.SRP.SaitekLibrary
 
         public void Dispose()
         {
+             _ = ClearDisplay();
+            
             Reader?.Stop();
 
-            GC.SuppressFinalize(this);
         }
 
         //private void Dispose(bool disposing)

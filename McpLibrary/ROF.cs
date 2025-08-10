@@ -230,12 +230,12 @@ namespace MauiSoft.SRP.McpLibrary
 
             // Throttle
 
-            //int raw = Get10BitSigned(((buffer[3] >> 4) | (buffer[4] << 4)) & 0x3FF) + 512;
+            int raw = Get10BitSigned(((buffer[3] >> 4) | (buffer[4] << 4)) & 0x3FF) + 512;
 
-            //int axis = raw.MapRange(8, 970, AXIS_RANGE_MAX, AXIS_RANGE_MIN); // EJE INVERTIDO
+            int axis = raw.MapRange(8, 970, AXIS_RANGE_MAX, AXIS_RANGE_MIN); // EJE INVERTIDO
 
-            //if (_ThottleTracker.HasChanged(Math.Clamp(axis, AXIS_RANGE_MIN, AXIS_RANGE_MAX)))
-            //    ThrottleChanged?.Invoke(_ThottleTracker.Current);
+            if (_ThottleTracker.HasChanged(Math.Clamp(axis, AXIS_RANGE_MIN, AXIS_RANGE_MAX)))
+                ThrottleChanged?.Invoke(_ThottleTracker.Current);
 
             //Debug.WriteLine($"{raw}");
 
