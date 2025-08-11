@@ -232,17 +232,9 @@ namespace MauiSoft.SRP
 
         private void MCP_VERSPEED_DEC() => ExecuteRotary();
 
-        private void MCP_CRSR_INC()
-        {
-            ExecuteRotary();
-            AudioPlayer.Play("switch_small.wav");
-        }
+        private void MCP_CRSR_INC() => ExecuteRotary();
 
-        private void MCP_CRSR_DEC()
-        {
-            ExecuteRotary();
-            AudioPlayer.Play("switch_small.wav");
-        }
+        private void MCP_CRSR_DEC() => ExecuteRotary();
 
         private void MCP_ELEVATOR_TRIM_DW() => Run(times: 3);
 
@@ -492,7 +484,7 @@ namespace MauiSoft.SRP
                 for (int i = 0; i < times; i++)
                     FSUIPCHelper.Instance.Execute(command);
 
-                Debug.WriteLine($"Event: {command}");
+                //Debug.WriteLine($"Event: {command}");
             }
             catch (Exception ex)
             {
@@ -514,6 +506,8 @@ namespace MauiSoft.SRP
                 string Release = command.Replace("_INC", "_REL").Replace("_DEC", "_REL");
 
                 FSUIPCHelper.Instance.Execute(Release);
+
+                //AudioPlayer.Play("switch_small.wav");
             }
             catch (Exception ex)
             {
