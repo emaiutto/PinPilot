@@ -27,15 +27,15 @@
   </ItemGroup>
 
   <ItemGroup>
-	<ProjectReference Include="..\FsuipcWrapper\MauiSoft.SRP.FsuipcWrapper.csproj" />
 	<ProjectReference Include="..\MauiSoft.SRP.Audio\MauiSoft.SRP.Audio.csproj" />
-	<ProjectReference Include="..\Profile\MauiSoft.SRP.Profile.csproj" />
-	<ProjectReference Include="..\SaitekLibrary\MauiSoft.SRP.SaitekLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>
 	<Reference Include="MauiSoft.SRP.ArduinoComm">
 	  <HintPath>..\Libs\MauiSoft.SRP.ArduinoComm.dll</HintPath>
+	</Reference>
+	<Reference Include="MauiSoft.SRP.FsuipcWrapper">
+	  <HintPath>..\Libs\MauiSoft.SRP.FsuipcWrapper.dll</HintPath>
 	</Reference>
 	<Reference Include="MauiSoft.SRP.GeoTools">
 	  <HintPath>..\Libs\MauiSoft.SRP.GeoTools.dll</HintPath>
@@ -48,6 +48,9 @@
 	</Reference>
 	<Reference Include="MauiSoft.SRP.MyExtensions">
 	  <HintPath>..\Libs\MauiSoft.SRP.MyExtensions.dll</HintPath>
+	</Reference>
+	<Reference Include="MauiSoft.SRP.Profile">
+	  <HintPath>..\Libs\MauiSoft.SRP.Profile.dll</HintPath>
 	</Reference>
   </ItemGroup>
 

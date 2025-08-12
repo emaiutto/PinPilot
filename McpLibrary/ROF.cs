@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Reflection.PortableExecutable;
 using System.Runtime.CompilerServices;
 using MauiSoft.SRP.Helpers;
 using MauiSoft.SRP.MyExtensions;
@@ -13,19 +12,14 @@ namespace MauiSoft.SRP.McpLibrary
     public sealed class ROF : IDisposable
     {
 
-        const int VendorId = 0xffff; // ROF
-        const int ProductId = 0xb004;
+        const int VendorId = 0xffff, ProductId = 0xb004; // ROF
+
+        private RudderProcessor _rudderProcessor = new(dead_zone: 2048, axis_raw_min: -145, axis_raw_max: 290, alpha: 0.9f, delta: 50);
 
         public GearController gearController = new(bitUp: 5, bitDown: 6);
 
         private readonly ButtonEdgeTracker _tracker = new();
-
-        private readonly ChangeTracker<int> _ThottleTracker = new();
-        public event Action<int>? ThrottleChanged;
         
-        private readonly ChangeTracker<int> _RudderTracker = new();
-        public event Action<int>? RudderChanged;
-
 
         private readonly HidReader? Reader00;
         private readonly HidReader? Reader01;
@@ -90,8 +84,6 @@ namespace MauiSoft.SRP.McpLibrary
         #endregion
 
 
-        const int AXIS_RANGE_MIN = -16384;
-        const int AXIS_RANGE_MAX = 16384;
 
 
         private const int Bit0 = 0;
@@ -130,28 +122,39 @@ namespace MauiSoft.SRP.McpLibrary
 
             var buffer = Reader00.Device.InputBuffer;
 
+            byte B6 = buffer[6];
             byte B7 = buffer[7];
 
-            if (B7.IsBitSet(Bit2)) CRSL_INC?.Invoke();
-            if (B7.IsBitSet(Bit3)) CRSL_DEC?.Invoke();
+            if (B7.IsBitSet(Bit2))
+                CRSL_INC?.Invoke();
+            else if (B7.IsBitSet(Bit3))
+                CRSL_DEC?.Invoke();
 
-            if (B7.IsBitSet(Bit0)) SPEED_INC?.Invoke();
-            if (B7.IsBitSet(Bit1)) SPEED_DEC?.Invoke();
+            if (B7.IsBitSet(Bit0))
+                SPEED_INC?.Invoke();
+            else if (B7.IsBitSet(Bit1))
+                SPEED_DEC?.Invoke();
+            
 
+            if (B6.IsBitSet(Bit6))
+                HEADING_INC?.Invoke();
+            else if (B6.IsBitSet(Bit7))
+                HEADING_DEC?.Invoke();
 
-            byte B6 = buffer[6];
+            if (B6.IsBitSet(Bit4))
+                ALTITUDE_INC?.Invoke();
+            else if (B6.IsBitSet(Bit5))
+                ALTITUDE_DEC?.Invoke();
 
-            if (B6.IsBitSet(Bit6)) HEADING_INC?.Invoke();
-            if (B6.IsBitSet(Bit7)) HEADING_DEC?.Invoke();
+            if (B6.IsBitSet(Bit3))
+                VERSPEED_INC?.Invoke();
+            else if (B6.IsBitSet(Bit2))
+                VERSPEED_DEC?.Invoke();
 
-            if (B6.IsBitSet(Bit4)) ALTITUDE_INC?.Invoke();
-            if (B6.IsBitSet(Bit5)) ALTITUDE_DEC?.Invoke();
-
-            if (B6.IsBitSet(Bit3)) VERSPEED_INC?.Invoke();
-            if (B6.IsBitSet(Bit2)) VERSPEED_DEC?.Invoke();
-
-            if (B6.IsBitSet(Bit0)) CRSR_INC?.Invoke();
-            if (B6.IsBitSet(Bit1)) CRSR_DEC?.Invoke();
+            if (B6.IsBitSet(Bit0))
+                CRSR_INC?.Invoke();
+            else if (B6.IsBitSet(Bit1))
+                CRSR_DEC?.Invoke();
 
 
             if (_tracker.CheckRisingEdge(nameof(CWS_BUTTON), buffer[9].IsBitSet(Bit4))) CWS_BUTTON?.Invoke();
@@ -159,26 +162,8 @@ namespace MauiSoft.SRP.McpLibrary
             if (_tracker.CheckRisingEdge(nameof(APP_BUTTON), buffer[9].IsBitSet(Bit7))) APP_BUTTON?.Invoke();
 
 
-            // Rudder
-
-            int raw = Get10BitSigned(((buffer[4] >> 6) | (buffer[5] << 2)) & 0x3FF);
-
-            int axis = raw.MapRange(-220, 220, AXIS_RANGE_MIN, AXIS_RANGE_MAX);
-
-            // Aplicar zona muerta (ajustable)
-            const int DEADZONE = 1000;
-
-            if (Math.Abs(axis) < DEADZONE)
-                axis = 0;
-            else
-                axis = axis < 0
-                    ? axis + DEADZONE
-                    : axis - DEADZONE;
-
-            if (_RudderTracker.HasChanged(Math.Clamp(axis, AXIS_RANGE_MIN, AXIS_RANGE_MAX)))
-                RudderChanged?.Invoke(_RudderTracker.Current);
-
-            //Debug.WriteLine($"{raw}");
+            // Procesar con suavizado y delta
+            _rudderProcessor.ProcessRawRudder(Get10BitSigned(((buffer[4] >> 6) | (buffer[5] << 2)) & 0x3FF));
 
             return Task.CompletedTask;
         }
@@ -192,6 +177,8 @@ namespace MauiSoft.SRP.McpLibrary
             var buffer = Reader01.Device.InputBuffer;
 
             byte B6 = buffer[6];
+            byte B7 = buffer[7];
+
 
             if (_tracker.CheckRisingEdge(nameof(LNAV_BUTTON), B6.IsBitSet(Bit4))) LNAV_BUTTON?.Invoke();
 
@@ -201,20 +188,14 @@ namespace MauiSoft.SRP.McpLibrary
 
 
             if (B6.IsBitSet(Bit0))
-            {
                 ELEVATOR_TRIM_DW?.Invoke();
-            }
             else if (B6.IsBitSet(Bit1))
-            {
                 ELEVATOR_TRIM_UP?.Invoke();
-            }
 
 
             // ignorar si el avion no tiene tren retractil
             gearController.Update(B6);
 
-
-            byte B7 = buffer[7];
 
             if (_tracker.CheckRisingEdge(nameof(FlapsDown), B7.IsBitSet(0))) FlapsDown?.Invoke();
 
@@ -230,12 +211,12 @@ namespace MauiSoft.SRP.McpLibrary
 
             // Throttle
 
-            int raw = Get10BitSigned(((buffer[3] >> 4) | (buffer[4] << 4)) & 0x3FF) + 512;
+            //int raw = Get10BitSigned(((buffer[3] >> 4) | (buffer[4] << 4)) & 0x3FF) + 512;
 
-            int axis = raw.MapRange(8, 970, AXIS_RANGE_MAX, AXIS_RANGE_MIN); // EJE INVERTIDO
+            //int axis = raw.MapRange(8, 970, AXIS_RANGE_MAX, AXIS_RANGE_MIN); // EJE INVERTIDO
 
-            if (_ThottleTracker.HasChanged(Math.Clamp(axis, AXIS_RANGE_MIN, AXIS_RANGE_MAX)))
-                ThrottleChanged?.Invoke(_ThottleTracker.Current);
+            //if (_ThottleTracker.HasChanged(Math.Clamp(axis, AXIS_RANGE_MIN, AXIS_RANGE_MAX)))
+            //    ThrottleChanged?.Invoke(_ThottleTracker.Current);
 
             //Debug.WriteLine($"{raw}");
 

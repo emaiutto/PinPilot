@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using MauiSoft.SRP.MyExtensions;
+﻿using MauiSoft.SRP.MyExtensions;
 
 namespace MauiSoft.SRP.McpLibrary
 {

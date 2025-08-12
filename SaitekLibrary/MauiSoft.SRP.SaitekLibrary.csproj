@@ -11,14 +11,17 @@
     <Company>Maui Soft</Company>
     <PackageTags>Saitek;Radio;Flight Simulator</PackageTags>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <RunAnalyzersDuringLiveAnalysis>True</RunAnalyzersDuringLiveAnalysis>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <WarningLevel>6</WarningLevel>
+    <Optimize>True</Optimize>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <WarningLevel>6</WarningLevel>
+    <Optimize>True</Optimize>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,17 +29,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FsuipcWrapper\MauiSoft.SRP.FsuipcWrapper.csproj" />
     <ProjectReference Include="..\Profile\MauiSoft.SRP.Profile.csproj" />
-    <ProjectReference Include="..\TinyHIDLibrary\TinyHIDLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="MauiSoft.SRP.FsuipcWrapper">
+      <HintPath>..\Libs\MauiSoft.SRP.FsuipcWrapper.dll</HintPath>
+    </Reference>
     <Reference Include="MauiSoft.SRP.Helpers">
       <HintPath>..\Libs\MauiSoft.SRP.Helpers.dll</HintPath>
     </Reference>
     <Reference Include="MauiSoft.SRP.MyExtensions">
       <HintPath>..\Libs\MauiSoft.SRP.MyExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="TinyHIDLibrary">
+      <HintPath>..\Libs\TinyHIDLibrary.dll</HintPath>
     </Reference>
   </ItemGroup>
 

@@ -7,6 +7,10 @@
 	<PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	<Optimize>True</Optimize>
+  </PropertyGroup>
+
   <ItemGroup>
 	<Reference Include="fsuipcClient">
 	  <HintPath>..\Libs\fsuipcClient.dll</HintPath>

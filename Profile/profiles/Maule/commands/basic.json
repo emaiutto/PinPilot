@@ -6,6 +6,7 @@
 	"MCP_ELEVATOR_TRIM_UP": { "Command": 65615 },
 	"MCP_ELEVATOR_TRIM_DW": { "Command": 65607 },
 
-	"AXIS_THROTTLE_SET": { "Command": 65765 }
+    "AXIS_RUDDER_SET": { "Command": 65764 },
+    "AXIS_THROTTLE_SET": { "Command": 65765 }
 
 }

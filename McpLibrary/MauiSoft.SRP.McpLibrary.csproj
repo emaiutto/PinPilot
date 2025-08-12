@@ -7,10 +7,9 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\SaitekLibrary\MauiSoft.SRP.SaitekLibrary.csproj" />
-    <ProjectReference Include="..\TinyHIDLibrary\TinyHIDLibrary.csproj" />
-  </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Optimize>False</Optimize>
+  </PropertyGroup>
 
   <ItemGroup>
     <Reference Include="fsuipcClient">
@@ -18,6 +17,9 @@
     </Reference>
     <Reference Include="MauiSoft.SRP.ArduinoComm">
       <HintPath>..\Libs\MauiSoft.SRP.ArduinoComm.dll</HintPath>
+    </Reference>
+    <Reference Include="MauiSoft.SRP.FsuipcWrapper">
+      <HintPath>..\Libs\MauiSoft.SRP.FsuipcWrapper.dll</HintPath>
     </Reference>
     <Reference Include="MauiSoft.SRP.GeoTools">
       <HintPath>..\Libs\MauiSoft.SRP.GeoTools.dll</HintPath>
@@ -30,6 +32,9 @@
     </Reference>
     <Reference Include="MauiSoft.SRP.MyExtensions">
       <HintPath>..\Libs\MauiSoft.SRP.MyExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="TinyHIDLibrary">
+      <HintPath>..\Libs\TinyHIDLibrary.dll</HintPath>
     </Reference>
   </ItemGroup>
 

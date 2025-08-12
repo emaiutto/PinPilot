@@ -8,10 +8,7 @@ using MauiSoft.SRP.FsuipcWrapper;
 using MauiSoft.SRP.Gauges;
 using MauiSoft.SRP.Main.Properties;
 using MauiSoft.SRP.McpLibrary;
-using MauiSoft.SRP.MyExtensions;
-using MauiSoft.SRP.Profile;
 using MauiSoft.SRP.SaitekLibrary;
-using Newtonsoft.Json.Linq;
 
 namespace MauiSoft.SRP
 {
@@ -28,7 +25,7 @@ namespace MauiSoft.SRP
 
         readonly DispatcherTimer timerProfile = new() { Interval = TimeSpan.FromMilliseconds(1000) };
 
-        readonly DispatcherTimer timerDisplay = new() { Interval = TimeSpan.FromMilliseconds(100) }; // 10 FPS.
+        readonly DispatcherTimer timerDisplay = new() { Interval = TimeSpan.FromMilliseconds(50) }; // 20 FPS.
 
 
         RadioPanel? RadioPanel;
@@ -64,10 +61,6 @@ namespace MauiSoft.SRP
         }
 
 
-
-        #region EVENT HANDLERS
-
-
         #region SAITEK EVENTS
 
         private DateTime _lastExecution = DateTime.MinValue;
@@ -92,6 +85,8 @@ namespace MauiSoft.SRP
 
             FSUIPCHelper.Instance.Execute(cmd);
             AudioPlayer.Play("switch_small.wav");
+
+            Debug.WriteLine(cmd);
         }
 
         private void SaitekRadioPanel_EnconderB1L()
@@ -205,9 +200,6 @@ namespace MauiSoft.SRP
         #endregion
 
 
-
-
-
         #region MCP EVENTS
 
         #region ROTARYS
@@ -246,11 +238,8 @@ namespace MauiSoft.SRP
         #region BUTTONS
 
         private void MCP_AT_BUTTON() => Run();
-
         private void MCP_FD_BUTTON() => Run();
-
         private void MCP_SPD_BUTTON() => Run();
-
         private void MCP_VNAV_BUTTON() => Run();
         private void MCP_LVL_CHG_BUTTON() => Run();
         private void MCP_HDGSEL_BUTTON() => Run();
@@ -260,21 +249,13 @@ namespace MauiSoft.SRP
         private void MCP_VS_BUTTON() => Run();
         private void MCP_CMD_BUTTON() => Run();
         private void MCP_CWS_BUTTON() => Run();
-
         private void MCP_CRSL_BUTTON() => Run();
-
-        private void MCP_CRSR_BUTTON()
-        {
-            
-
-            Run();
-        }
+        private void MCP_CRSR_BUTTON() => Run();
 
         #endregion
 
         #endregion
-
-        #endregion
+ 
 
 
         private void SuscribirEventos()
@@ -321,11 +302,6 @@ namespace MauiSoft.SRP
                 if (SIMU.Has("MCP_ELEVATOR_TRIM_DW")) MCP.ELEVATOR_TRIM_DW += MCP_ELEVATOR_TRIM_DW;
 
 
-                if (SIMU.Has("AXIS_THROTTLE_SET")) MCP.ThrottleChanged += MCP_ThrottleChanged;
-
-                if (SIMU.Has("AXIS_RUDDER_SET")) MCP.RudderChanged += MCP_RudderChanged;
-
-
                 if (SIMU.Has("MCP_FlapsUp")) MCP.FlapsUp += MCP_FlapsUp;
                 if (SIMU.Has("MCP_FlapsDown")) MCP.FlapsDown += MCP_FlapsDown;
 
@@ -367,11 +343,6 @@ namespace MauiSoft.SRP
                 Debug.WriteLine(ex.ToString());
             }
         }
-
-        private void MCP_ThrottleChanged(int obj) => FSUIPCHelper.Instance.Execute("AXIS_THROTTLE_SET", obj);
-
-        private void MCP_RudderChanged(int obj) => FSUIPCHelper.Instance.Execute("AXIS_RUDDER_SET", obj);
-
 
         private void GearController_GearLocked() => Run();
 
@@ -441,11 +412,6 @@ namespace MauiSoft.SRP
         }
 
 
-
-
-
-        //static int countDisplay = 0;
-
         private void TimerDisplay_Tick(object? sender, EventArgs e)
         {
             try
@@ -467,13 +433,7 @@ namespace MauiSoft.SRP
                 Debug.WriteLine(ex.ToString());
             }
 
-
-
         }
-
-
-
-
 
 
         [MethodImpl(MethodImplOptions.NoInlining)]
@@ -517,7 +477,9 @@ namespace MauiSoft.SRP
         }
 
 
+        #region ZOOM CONTROL
 
+        
         private void ZoomSlider_Initialized(object sender, EventArgs e)
         {
             zoomSlider.Value = Settings.Default.ValorZoom;
@@ -532,6 +494,8 @@ namespace MauiSoft.SRP
             }
 
         }
+
+        #endregion
 
 
 

@@ -8,17 +8,24 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Optimize>True</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>True</Optimize>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Profile\MauiSoft.SRP.Profile.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="fsuipcClient">
       <HintPath>..\Libs\fsuipcClient.dll</HintPath>
+    </Reference>
+    <Reference Include="MauiSoft.SRP.Profile">
+      <HintPath>..\Libs\MauiSoft.SRP.Profile.dll</HintPath>
     </Reference>
   </ItemGroup>
 
