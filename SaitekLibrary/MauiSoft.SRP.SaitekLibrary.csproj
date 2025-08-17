@@ -29,13 +29,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Profile\MauiSoft.SRP.Profile.csproj" />
+    <ProjectReference Include="..\FsuipcWrapper\MauiSoft.SRP.FsuipcWrapper.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="MauiSoft.SRP.FsuipcWrapper">
-      <HintPath>..\Libs\MauiSoft.SRP.FsuipcWrapper.dll</HintPath>
-    </Reference>
     <Reference Include="MauiSoft.SRP.Helpers">
       <HintPath>..\Libs\MauiSoft.SRP.Helpers.dll</HintPath>
     </Reference>

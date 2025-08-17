@@ -72,18 +72,7 @@ namespace MauiSoft.SRP.SaitekLibrary
             }
         }
 
-        public ConfigItem? Get(int index)
-        {
-
-            try
-            {
-                return Dictionary?[index];
-            }
-            catch
-            {
-                return null;
-            }
-        }
+        public ConfigItem? Get(int index) => Dictionary != null && Dictionary.TryGetValue(index, out var item) ? item : null;
 
 
     }

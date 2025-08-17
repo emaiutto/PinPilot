@@ -29,7 +29,7 @@
             </StatusBarItem>
 
             <StatusBarItem>
-                <Label Name="labelstatus1" Width="Auto" FontFamily ="P51LCD" />
+                <Label Name="labelstatus1" Width="Auto" FontFamily ="Segoe UI" />
             </StatusBarItem>
             
         </StatusBar>

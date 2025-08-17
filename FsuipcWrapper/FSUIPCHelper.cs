@@ -45,54 +45,15 @@ namespace MauiSoft.SRP.FsuipcWrapper
         #endregion
 
 
-        private static bool _FSUIPC_Running;
-        public static bool FSUIPC_Running { get => _FSUIPC_Running; }
-
-
         static readonly Offset<int> _sendControl = new(0x3110, true);
 
         static readonly Offset<int> _controlParameter = new(0x3114, true);
 
-        
-        // Definí el offset especial para comandos LUA (string)
-        //static readonly Offset<string> _luaCommand = new("LuaCmd", 0x0D70, 40, true);
-          
-
-        //public int Count => _Dictionary.Count;
-
-        public static void Open()
-        {
-            try
-            {
-                _FSUIPC_Running = true;
-
-                FSUIPCConnection.Open();
-            }
-            catch
-            {
-                //_FSUIPC_Running = false;
-
-                //Console.WriteLine("FSUIPC not running!");
-            }
-        }
-
-        public static void Update()
-        {
-            try
-            {
-                FSUIPCConnection.Process();
-            }
-            catch
-            {
-                _FSUIPC_Running = false;
-
-                Console.WriteLine("(Update) FSUIPC not running!");
-            }
-        }
+ 
 
         public void Execute(string key, int? parameter = null)
         {
-            if (!FSUIPC_Running) return;
+            //if (!FSUIPC_Running) return;
 
             if (!_Dictionary.TryGetValue(key, out CommandItem? value)) return;
 
@@ -112,17 +73,14 @@ namespace MauiSoft.SRP.FsuipcWrapper
 
             _sendControl.Value = value.Command;
 
-            Update();
-
+            //Update();
+            FSUIPCConnection.Process();
             //Thread.Sleep(50);
 
             _sendControl.Value = 0;
             
         }
-
-
-       
-          
+ 
 
 
 

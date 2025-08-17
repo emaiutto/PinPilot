@@ -55,4 +55,29 @@
 
     }
 
+    public class ValueTracker(int delta)
+    {
+        private int _lastValue = int.MinValue;
+
+        private readonly int _delta = delta;
+
+        public bool HasChanged(int newValue)
+        {
+            if (_lastValue == int.MinValue)
+            {
+                _lastValue = newValue;
+                return true;
+            }
+
+            if (Math.Abs(newValue - _lastValue) < _delta)
+                return false;
+
+            _lastValue = newValue;
+            return true;
+
+        }
+
+        public int Current => _lastValue;
+    }
+
 }

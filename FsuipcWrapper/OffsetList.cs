@@ -27,6 +27,8 @@ namespace MauiSoft.SRP.FsuipcWrapper
     {
         public Dictionary<string, OffsetItem> Dictionary { get; }
 
+        public int Count => Dictionary.Count;
+
 
         #region SINGLETON
 
@@ -163,7 +165,7 @@ namespace MauiSoft.SRP.FsuipcWrapper
         }
 
 
-        public string GetDataTypeString(string key) => Dictionary?[key]?.DataType ?? string.Empty;
+        //public string GetDataTypeString(string key) => Dictionary?[key]?.DataType ?? string.Empty;
 
 
         public dynamic? GetValue(string key)
@@ -220,7 +222,7 @@ namespace MauiSoft.SRP.FsuipcWrapper
             return null;
         }
 
-        public int Count => Dictionary.Count;
+        
 
     }
 

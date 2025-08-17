@@ -1,28 +1,36 @@
 ﻿using System.Diagnostics;
+using FSUIPC;
 using MauiSoft.SRP.ArduinoComm;
 using MauiSoft.SRP.FsuipcWrapper;
 using MauiSoft.SRP.Helpers;
-using MauiSoft.SRP.MyExtensions;
 
 namespace MauiSoft.SRP.Gauges.C172
 {
 
     public partial class Tachometer : UserControl
     {
-        private readonly string[] _offsets;
 
-        CancellationTokenSource cts = new();
+        private const string ENGINE_RPM_LVAR = "Eng1_RPM";
 
-        ArduinoSerialConnector? _arduino;
+        private static readonly double SCALE = 0.7;
 
-        private readonly ChangeTracker<float> _valueTracker = new();
+        private const int ANGLE_DELTA = 1; // solo actualiza si el cambio supera 1 grado
 
-        public Tachometer()
-        {
-            InitializeComponent();
+        private readonly ValueTracker _angleTracker = new(ANGLE_DELTA);
 
-            _offsets = Gauge.Instance.GetOffsets(GetType().Name) ?? [];
-        }
+        private ArduinoSerialConnector? _arduino;
+
+        private readonly CancellationTokenSource cts = new();
+
+
+        //private const int RPM_MIN = 0;
+        //private const int RPM_MAX = 3500;
+
+        //private const int ANGLE_MIN = -28;
+        //private const int ANGLE_MAX = 203;
+
+
+        public Tachometer() => InitializeComponent();
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -66,30 +74,34 @@ namespace MauiSoft.SRP.Gauges.C172
             }
         }
 
+
         protected override void OnRender(DrawingContext drawingContext)
         {
-
-            base.OnRender(drawingContext); // nunca lo omitas si no dibujás nada custom
+            base.OnRender(drawingContext);
 
             try
             {
+                int rpm = (int)FSUIPCConnection.ReadLVar(ENGINE_RPM_LVAR);
 
-                if (!_valueTracker.HasChanged(OffsetList.Instance.GetValue(_offsets[0]))) return;
+                //if (rpm < RPM_MIN || rpm > RPM_MAX)
+                //    return; // No es imprescindible esta validacion
 
-                _ = SafeSendAsync(_valueTracker.Current);
+                if (!_angleTracker.HasChanged(RpmTable.RpmToAngle[rpm]))
+                    return; // no se actualiza si el cambio es menor al delta
 
-                float angle = _valueTracker.Current.MapRange(0, 3500, -28, 203);
+                needle.RenderTransform = Graph.GetTransformGroup(0, 0, _angleTracker.Current, SCALE);
 
-                needle.RenderTransform = Graph.GetTransformGroup(0, 0, angle, 0.7);
-               
+                _ = SafeSendAsync(rpm);
+
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error en OnRender: {ex.Message}");
             }
         }
+        
 
-        private async Task SafeSendAsync(float value)
+        private async Task SafeSendAsync(int value)
         {
 
             if (_arduino == null || cts?.IsCancellationRequested == true)
@@ -99,7 +111,7 @@ namespace MauiSoft.SRP.Gauges.C172
             {
                 if (cts == null) return;
 
-                await _arduino.SendAsync($"{value:0}", cts.Token);
+                await _arduino.SendAsync($"{value}", cts.Token);
             }
             catch (OperationCanceledException)
             {

@@ -32,20 +32,18 @@
   </ItemGroup>
 
   <ItemGroup>
-	<ProjectReference Include="..\MauiSoft.SRP.Audio\MauiSoft.SRP.Audio.csproj" />
+	<ProjectReference Include="..\FsuipcWrapper\MauiSoft.SRP.FsuipcWrapper.csproj" />
 	<ProjectReference Include="..\McpLibrary\MauiSoft.SRP.McpLibrary.csproj" />
+	<ProjectReference Include="..\SaitekLibrary\MauiSoft.SRP.SaitekLibrary.csproj" />
 	<ProjectReference Include="..\WpfGauges\MauiSoft.SRP.Gauges.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-	<Reference Include="fsuipcClient">
-	  <HintPath>..\Libs\fsuipcClient.dll</HintPath>
-	</Reference>
 	<Reference Include="MauiSoft.SRP.ArduinoComm">
 	  <HintPath>..\Libs\MauiSoft.SRP.ArduinoComm.dll</HintPath>
 	</Reference>
-	<Reference Include="MauiSoft.SRP.FsuipcWrapper">
-	  <HintPath>..\Libs\MauiSoft.SRP.FsuipcWrapper.dll</HintPath>
+	<Reference Include="MauiSoft.SRP.Audio">
+	  <HintPath>..\Libs\MauiSoft.SRP.Audio.dll</HintPath>
 	</Reference>
 	<Reference Include="MauiSoft.SRP.GeoTools">
 	  <HintPath>..\Libs\MauiSoft.SRP.GeoTools.dll</HintPath>
@@ -58,12 +56,6 @@
 	</Reference>
 	<Reference Include="MauiSoft.SRP.MyExtensions">
 	  <HintPath>..\Libs\MauiSoft.SRP.MyExtensions.dll</HintPath>
-	</Reference>
-	<Reference Include="MauiSoft.SRP.Profile">
-	  <HintPath>..\Libs\MauiSoft.SRP.Profile.dll</HintPath>
-	</Reference>
-	<Reference Include="MauiSoft.SRP.SaitekLibrary">
-	  <HintPath>..\Libs\MauiSoft.SRP.SaitekLibrary.dll</HintPath>
 	</Reference>
   </ItemGroup>
 

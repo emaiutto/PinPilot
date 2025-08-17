@@ -1,36 +1,40 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0-windows10.0.19041.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <PlatformTarget>x64</PlatformTarget>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+	<TargetFramework>net9.0-windows10.0.19041.0</TargetFramework>
+	<ImplicitUsings>enable</ImplicitUsings>
+	<Nullable>enable</Nullable>
+	<PlatformTarget>x64</PlatformTarget>
+	<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <Optimize>True</Optimize>
+	<Optimize>True</Optimize>
+	<IsTrimmable>True</IsTrimmable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <Optimize>True</Optimize>
+	<Optimize>True</Optimize>
+	<IsTrimmable>True</IsTrimmable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <Compile Remove="FSUIPC\FsAltitude.cs" />
+    <Compile Remove="FSUIPC\TextMenu.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="fsuipcClient">
-      <HintPath>..\Libs\fsuipcClient.dll</HintPath>
-    </Reference>
-    <Reference Include="MauiSoft.SRP.Profile">
-      <HintPath>..\Libs\MauiSoft.SRP.Profile.dll</HintPath>
-    </Reference>
+	<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="System.Globalization" />
+		<Using Include="System.Globalization" />
   </ItemGroup>
 
+	<ItemGroup>
+		<None Update="profiles\**\*.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	
 </Project>

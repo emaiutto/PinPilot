@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using FSUIPC;
 using MauiSoft.SRP.Audio;
 using MauiSoft.SRP.FsuipcWrapper;
 using MauiSoft.SRP.Gauges;
@@ -22,10 +23,16 @@ namespace MauiSoft.SRP
     public partial class MainWindow : Window
     {
 
-
         readonly DispatcherTimer timerProfile = new() { Interval = TimeSpan.FromMilliseconds(1000) };
 
-        readonly DispatcherTimer timerDisplay = new() { Interval = TimeSpan.FromMilliseconds(50) }; // 20 FPS.
+
+        // Listas para cada frecuencia
+        private readonly List<UIElement> fastGauges = [];
+        private readonly List<UIElement> slowGauges = [];
+
+        readonly DispatcherTimer fastGaugesTimer = new() { Interval = TimeSpan.FromMilliseconds(50) }; // 20 FPS.
+
+        readonly DispatcherTimer slowGaugesTimer = new() { Interval = TimeSpan.FromMilliseconds(1000) }; // 1 FPS.
 
 
         RadioPanel? RadioPanel;
@@ -40,13 +47,18 @@ namespace MauiSoft.SRP
         {
             base.OnInitialized(e);
 
-            FSUIPCHelper.Open();
+            //FSUIPCHelper.Open();
+            FSUIPCConnection.Open();
 
             timerProfile.Tick += TimerProfile_Tick;
 
             timerProfile.Start();
 
-            timerDisplay.Tick += TimerDisplay_Tick;
+            
+            fastGaugesTimer.Tick += FastGaugesTimer_Tick;
+
+            slowGaugesTimer.Tick += SlowGaugesTimer_Tick;
+
 
             if (Settings.Default.Height>0)
                 Height = Settings.Default.Height;
@@ -59,6 +71,86 @@ namespace MauiSoft.SRP
             Top = Settings.Default.Top;
 
         }
+
+
+        private void TimerProfile_Tick(object? sender, EventArgs e)
+        {
+            try
+            {
+
+                var profile = Profile.Profile.Instance;
+
+                // Actualiza solo el grupo PROFILE
+                FSUIPCConnection.Process("profile");
+
+                if (string.IsNullOrWhiteSpace(profile.AircraftProfile))
+                {
+                    labelstatus1.Content = "Waiting for profile...";
+                    return;
+                }
+
+                timerProfile.Stop();
+                labelstatus1.Content = $"{profile.AircraftDescription}";
+
+
+                _ = RadioPanel?.DrawDots();
+
+                LoadGauges();
+
+                SuscribirEventos();
+
+                fastGaugesTimer.Start();
+                slowGaugesTimer.Start();
+
+            }
+            catch (Exception ex)
+            {
+                timerProfile.Stop();
+                Debug.WriteLine(ex.Message);
+            }
+        }
+
+        private void FastGaugesTimer_Tick(object? sender, EventArgs e)
+        {
+            try
+            {
+
+                // HIGH PRIORITY UPDATE - IMPORTANTE ACTUALIZAR SIEMPRE
+                //FSUIPCHelper.Update();
+                FSUIPCConnection.Process();
+
+                RadioPanel?.Update();
+
+                foreach (var control in fastGauges) control.InvalidateVisual();
+
+            }
+            catch (Exception ex)
+            {
+                fastGaugesTimer.Stop();
+
+                MessageBox.Show(ex.ToString());
+                Debug.WriteLine(ex.ToString());
+            }
+        }
+
+        private void SlowGaugesTimer_Tick(object? sender, EventArgs e)
+        {
+            try
+            {
+                foreach (var control in slowGauges)
+                {
+                    control.InvalidateVisual();
+                }
+            }
+            catch (Exception ex)
+            {
+                slowGaugesTimer.Stop();
+
+                MessageBox.Show(ex.ToString());
+                Debug.WriteLine(ex.ToString());
+            }
+        }
+ 
 
 
         #region SAITEK EVENTS
@@ -363,77 +455,38 @@ namespace MauiSoft.SRP
 
         //FSUIPCHelper.RunLuaCode("Lua flaps_down");
 
+        enum UpdateRate { Fast, Slow }
 
-
-        private void TimerProfile_Tick(object? sender, EventArgs e)
+        private void LoadGauges()
         {
-            try
+            var gauges = Gauge.Instance.Dictionary;
+            if (gauges == null) return;
+
+            double size = Settings.Default.ValorZoom + 100;
+
+            foreach (var item in gauges)
             {
-                // Actualiza solo el grupo PROFILE
-                var profile = Profile.Profile.Instance;
-                Profile.Profile.Update();
+                var control = Gauge.CreateControlByName(item.Key);
+                if (control == null) continue;
 
-                if (string.IsNullOrWhiteSpace(profile.AircraftProfile))
-                {
-                    labelstatus1.Content = "Waiting for profile...";
-                    return;
-                }
+                control.Width = size;
+                control.Height = size;
 
-                timerProfile.Stop();
-                labelstatus1.Content = $"{profile.AircraftDescription}";
+                wrappanel1.Children.Add(control);
 
-                var gauges = Gauge.Instance.Dictionary;
-                if (gauges == null) return;
+                // Si es null, asumimos Slow
+                var rate = item.Value.UpdateRate?.Equals("fast", StringComparison.OrdinalIgnoreCase) == true
+                    ? UpdateRate.Fast
+                    : UpdateRate.Slow;
 
-                double size = Settings.Default.ValorZoom + 100;
-
-                foreach (var item in gauges)
-                {
-                    var control = Gauge.CreateControlByName(item.Key);
-                    if (control == null) continue;
-
-                    control.Width = size;
-                    control.Height = size;
-
-                    wrappanel1.Children.Add(control);
-                }
-
-                SuscribirEventos();
-
-                _ = RadioPanel?.DrawDots();
-
-                timerDisplay.Start();
-            }
-            catch (Exception ex)
-            {
-                timerProfile.Stop();
-                Debug.WriteLine(ex.Message);
+                if (rate == UpdateRate.Fast)
+                    fastGauges.Add(control);
+                else
+                    slowGauges.Add(control);
+ 
             }
         }
 
-
-        private void TimerDisplay_Tick(object? sender, EventArgs e)
-        {
-            try
-            {
-
-                // HIGH PRIORITY UPDATE - IMPORTANTE ACTUALIZAR SIEMPRE
-                FSUIPCHelper.Update();
-                
-                foreach (Control c in wrappanel1.Children) c.InvalidateVisual();
-
-                RadioPanel?.Update();
-
-            }
-            catch (Exception ex)
-            {
-                timerDisplay.Stop();
-
-                MessageBox.Show(ex.ToString());
-                Debug.WriteLine(ex.ToString());
-            }
-
-        }
 
 
         [MethodImpl(MethodImplOptions.NoInlining)]

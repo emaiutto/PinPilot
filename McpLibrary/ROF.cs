@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using MauiSoft.SRP.Helpers;
 using MauiSoft.SRP.MyExtensions;
 using TinyHIDLibrary;
@@ -14,7 +13,9 @@ namespace MauiSoft.SRP.McpLibrary
 
         const int VendorId = 0xffff, ProductId = 0xb004; // ROF
 
-        private RudderProcessor _rudderProcessor = new(dead_zone: 2048, axis_raw_min: -145, axis_raw_max: 290, alpha: 0.9f, delta: 50);
+        private AnalogController _rudderProcessor = new(dead_zone: 2048, axis_raw_min: -130, axis_raw_max: 295, alpha: 0.9f, delta: 256);
+
+        private AnalogController _throttleProcessor = new(dead_zone: 0, axis_raw_min: 905, axis_raw_max: 7, alpha: 0.9f, delta: 256);
 
         public GearController gearController = new(bitUp: 5, bitDown: 6);
 
@@ -162,7 +163,6 @@ namespace MauiSoft.SRP.McpLibrary
             if (_tracker.CheckRisingEdge(nameof(APP_BUTTON), buffer[9].IsBitSet(Bit7))) APP_BUTTON?.Invoke();
 
 
-            // Procesar con suavizado y delta
             _rudderProcessor.ProcessRawRudder(Get10BitSigned(((buffer[4] >> 6) | (buffer[5] << 2)) & 0x3FF));
 
             return Task.CompletedTask;
@@ -207,18 +207,7 @@ namespace MauiSoft.SRP.McpLibrary
             if (_tracker.CheckRisingEdge(nameof(CRSR_BUTTON), buffer[9].IsBitSet(Bit5))) CRSR_BUTTON?.Invoke();
 
 
-
-
-            // Throttle
-
-            //int raw = Get10BitSigned(((buffer[3] >> 4) | (buffer[4] << 4)) & 0x3FF) + 512;
-
-            //int axis = raw.MapRange(8, 970, AXIS_RANGE_MAX, AXIS_RANGE_MIN); // EJE INVERTIDO
-
-            //if (_ThottleTracker.HasChanged(Math.Clamp(axis, AXIS_RANGE_MIN, AXIS_RANGE_MAX)))
-            //    ThrottleChanged?.Invoke(_ThottleTracker.Current);
-
-            //Debug.WriteLine($"{raw}");
+            _throttleProcessor.ProcessRawThrottle(Get10BitSigned(((buffer[3] >> 4) | (buffer[4] << 4)) & 0x3FF) + 512);
 
             return Task.CompletedTask;
         }

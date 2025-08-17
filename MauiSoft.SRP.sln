@@ -14,14 +14,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauiSoft.SRP.Gauges", "WpfG
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MauiSoft.SRP.Main", "Main\MauiSoft.SRP.Main.csproj", "{A6B1D570-D56C-4226-B3BF-4ACEE188C5D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiSoft.SRP.McpLibrary", "McpLibrary\MauiSoft.SRP.McpLibrary.csproj", "{DE921C71-BEDD-F85C-35FA-774B9E3F1F72}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 	ProjectSection(SolutionItems) = preProject
-		Libs\fsuipcClient.dll = Libs\fsuipcClient.dll
 		Libs\MauiSoft.SRP.ArduinoComm.dll = Libs\MauiSoft.SRP.ArduinoComm.dll
 		Libs\MauiSoft.SRP.Audio.dll = Libs\MauiSoft.SRP.Audio.dll
-		Libs\MauiSoft.SRP.FsuipcWrapper.dll = Libs\MauiSoft.SRP.FsuipcWrapper.dll
 		Libs\MauiSoft.SRP.GeoTools.dll = Libs\MauiSoft.SRP.GeoTools.dll
 		Libs\MauiSoft.SRP.Helpers.dll = Libs\MauiSoft.SRP.Helpers.dll
 		Libs\MauiSoft.SRP.Logger.dll = Libs\MauiSoft.SRP.Logger.dll
@@ -38,7 +34,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{9FB97EB8-3
 		The 2016 List of FSX and P3D Controls.pdf = The 2016 List of FSX and P3D Controls.pdf
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiSoft.SRP.Audio", "MauiSoft.SRP.Audio\MauiSoft.SRP.Audio.csproj", "{F1AC4023-0480-DEFB-8093-2AA7AD33E39E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiSoft.SRP.FsuipcWrapper", "FsuipcWrapper\MauiSoft.SRP.FsuipcWrapper.csproj", "{DDFCAAA9-D93C-B79F-935D-AFDD02A16052}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiSoft.SRP.McpLibrary", "McpLibrary\MauiSoft.SRP.McpLibrary.csproj", "{DE921C71-BEDD-F85C-35FA-774B9E3F1F72}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiSoft.SRP.SaitekLibrary", "SaitekLibrary\MauiSoft.SRP.SaitekLibrary.csproj", "{F8E215AD-F7D1-DDED-3FDC-A7979E9D511C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -54,14 +54,18 @@ Global
 		{A6B1D570-D56C-4226-B3BF-4ACEE188C5D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6B1D570-D56C-4226-B3BF-4ACEE188C5D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6B1D570-D56C-4226-B3BF-4ACEE188C5D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDFCAAA9-D93C-B79F-935D-AFDD02A16052}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDFCAAA9-D93C-B79F-935D-AFDD02A16052}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDFCAAA9-D93C-B79F-935D-AFDD02A16052}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDFCAAA9-D93C-B79F-935D-AFDD02A16052}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DE921C71-BEDD-F85C-35FA-774B9E3F1F72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DE921C71-BEDD-F85C-35FA-774B9E3F1F72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE921C71-BEDD-F85C-35FA-774B9E3F1F72}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE921C71-BEDD-F85C-35FA-774B9E3F1F72}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F1AC4023-0480-DEFB-8093-2AA7AD33E39E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F1AC4023-0480-DEFB-8093-2AA7AD33E39E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F1AC4023-0480-DEFB-8093-2AA7AD33E39E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F1AC4023-0480-DEFB-8093-2AA7AD33E39E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8E215AD-F7D1-DDED-3FDC-A7979E9D511C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8E215AD-F7D1-DDED-3FDC-A7979E9D511C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8E215AD-F7D1-DDED-3FDC-A7979E9D511C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8E215AD-F7D1-DDED-3FDC-A7979E9D511C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

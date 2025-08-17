@@ -139,6 +139,8 @@ namespace MauiSoft.SRP.SaitekLibrary
             SetDisplay(1);
             SetDisplay(2);
             SetDisplay(3);
+
+            _ = (Reader?.Device?.SetFeature());
         }
 
 
@@ -228,111 +230,193 @@ namespace MauiSoft.SRP.SaitekLibrary
 
 
 
+        //private void SetDisplay(int pos)
+        //{
+
+        //    if (Reader?.Device == null) return;
+
+
+        //    int sw = pos <= 1 ? 0 : 1; // SWITCH
+
+        //    int index = Switches[sw]; // 0 - 6 (posicion del switch)
+
+
+
+        //    string[]? data = null;
+
+        //    ConfigItem? ConfigItem = Config.Instance.Get(index);
+
+        //    if (pos == 0 || pos == 2) data = ConfigItem?.DSL; // DISPLAY LEFT
+
+        //    if (pos == 1 || pos == 3) data = ConfigItem?.DSR; // DISPLAY RIGHT
+
+        //    if (data == null) return; // RETORNA Y QUEDA LIMPIO!
+
+
+
+        //    if (!_Display_Trackers[pos].HasChanged(Convert.ToSingle(OffsetList.Instance.GetValue(data[0])))) return;
+
+        //    float? value = _Display_Trackers[pos].Current;
+
+
+
+        //    var item = OffsetList.Instance.Dictionary[data[0]];
+
+        //    if (item.Frecuency != null && (bool)item.Frecuency)
+        //        value = TransformFrecuency(value);
+        //    else
+        //        value = (float)Math.Round((double)value, 2);
+
+
+
+        //    // FORMAT STRING
+        //    string? str = data[1].IsNullEmptyOrSpace()
+        //        ? (value?.ToString(CultureInfo.InvariantCulture))
+        //        : (value?.ToString(data[1], CultureInfo.InvariantCulture));
+
+
+        //    if (str == null) return; // RETORNA Y QUEDA LIMPIO!
+
+
+        //    // Caso: Vertical Speed en GROUND
+        //    // Negativo que no tienen que mostrarse (-16960)
+        //    if (value == -16960) return;
+
+
+
+        //    int ini = pos * DIGITOS + 1;
+
+        //    int posdecimal = 0;
+
+        //    int posicion = 4;
+
+        //    for (int i = str.Length - 1; i >= 0; i--)
+        //    {
+
+        //        switch ((byte)str[i])
+        //        {
+
+        //            case 45:
+        //                Reader.Device.FeaturesBuffer[ini + posicion] = NEGATIVE_SIGN;
+        //                break;
+
+        //            case 46:
+        //                posdecimal = posicion;
+        //                break;
+
+        //            default:
+        //                Reader.Device.FeaturesBuffer[ini + posicion] = (byte)str[i];
+        //                posicion--;
+        //                break;
+
+        //        }
+
+        //    }
+
+        //    if (posdecimal > 0)
+        //        Reader.Device.FeaturesBuffer[ini + posdecimal] += 160; // Agregar punto decimal
+
+
+        //    byte? led = OffsetList.Instance.GetValue(data[2]);
+
+        //    // Agrego un punto al final como indicador de "luz"
+        //    if (led != null && led == 1)
+        //    {
+        //        if (Reader.Device.FeaturesBuffer[ini + 4] == CLEAR)
+        //        {
+        //            Reader.Device.FeaturesBuffer[ini + 4] = DECIMAL_POINT;
+        //        }
+        //        else
+        //        {
+        //            Reader.Device.FeaturesBuffer[ini + 4] += 160;
+        //        }
+        //    }
+
+
+
+        //}
+
+        
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void SetDisplay(int pos)
         {
-
             if (Reader?.Device == null) return;
 
+            int sw = pos > 1 ? 1 : 0;
+            int index = Switches[sw];
 
-            int sw = pos <= 1 ? 0 : 1; // SWITCH
+            var cfg = Config.Instance.Get(index);
+            if (cfg == null) return;
 
-            int index = Switches[sw]; // 0 - 6 (posicion del switch)
+            string[]? data = pos switch
+            {
+                0 or 2 => cfg.DSL,
+                1 or 3 => cfg.DSR,
+                _ => null
+            };
+            if (data == null) return;
 
-
-            
-            string[]? data = null;
-
-            ConfigItem? ConfigItem = Config.Instance.Get(index);
-
-            if (pos == 0 || pos == 2) data = ConfigItem?.DSL; // DISPLAY LEFT
-
-            if (pos == 1 || pos == 3) data = ConfigItem?.DSR; // DISPLAY RIGHT
-
-            if (data == null) return; // RETORNA Y QUEDA LIMPIO!
-
-
-            
-            if (!_Display_Trackers[pos].HasChanged(Convert.ToSingle(OffsetList.Instance.GetValue(data[0])))) return;
+            // --- TRACKER ---
+            float rawValue = OffsetList.Instance.GetValue(data[0]);
+            if (!_Display_Trackers[pos].HasChanged(rawValue)) return;
 
             float? value = _Display_Trackers[pos].Current;
-                 
+            if (value == -16960) return; // vertical speed special case
 
-
+            // --- TRANSFORM ---
             var item = OffsetList.Instance.Dictionary[data[0]];
+            value = (item.Frecuency == true)
+                ? TransformFrecuency(value)
+                : MathF.Round(value ?? 0, 2);
 
-            if (item.Frecuency != null && (bool)item.Frecuency)
-                value = TransformFrecuency(value);
-            else
-                value = (float)Math.Round((double)value, 2);
+            // --- FORMAT ---
+            string? str = string.IsNullOrWhiteSpace(data[1])
+                ? value?.ToString(CultureInfo.InvariantCulture)
+                : value?.ToString(data[1], CultureInfo.InvariantCulture);
 
-
-
-            // FORMAT STRING
-            string? str = data[1].IsNullEmptyOrSpace()
-                ? (value?.ToString(CultureInfo.InvariantCulture))
-                : (value?.ToString(data[1], CultureInfo.InvariantCulture));
-
-
-            if (str == null) return; // RETORNA Y QUEDA LIMPIO!
-
-
-            // Caso: Vertical Speed en GROUND
-            // Negativo que no tienen que mostrarse (-16960)
-            if (value == -16960) return;
-
-
+            if (string.IsNullOrEmpty(str)) return;
 
             int ini = pos * DIGITOS + 1;
-
+            int digitPos = 4;
             int posdecimal = 0;
 
-            int posicion = 4;
+            // Lookup rápido: valores predefinidos
+            const byte DOT = (byte)'.';
+            const byte MINUS = (byte)'-';
 
-            for (int i = str.Length - 1; i >= 0; i--)
+            for (int i = str.Length - 1; i >= 0 && digitPos >= 0; i--)
             {
+                byte ch = (byte)str[i];
 
-                switch ((byte)str[i])
-                {
+                // Branchless mapping:
+                bool isDot = ch == DOT;
+                bool isMinus = ch == MINUS;
 
-                    case 45:
-                        Reader.Device.FeaturesBuffer[ini + posicion] = NEGATIVE_SIGN;
-                        break;
+                // Si es número o cualquier otro char válido
+                Reader.Device.FeaturesBuffer[ini + digitPos] = (byte)(isMinus ? NEGATIVE_SIGN : ch);
 
-                    case 46:
-                        posdecimal = posicion;
-                        break;
+                // Guardar posdecimal sin branch (solo OR lógico)
+                posdecimal = isDot ? digitPos : posdecimal;
 
-                    default:
-                        Reader.Device.FeaturesBuffer[ini + posicion] = (byte)str[i];
-                        posicion--;
-                        break;
-
-                }
-
+                // Avanzar digitPos sólo si no era '.' (branchless con suma)
+                digitPos -= (isDot || isMinus) ? 0 : 1;
             }
 
             if (posdecimal > 0)
-                Reader.Device.FeaturesBuffer[ini + posdecimal] += 160; // Agregar punto decimal
+                Reader.Device.FeaturesBuffer[ini + posdecimal] += 160;
 
-
-            byte? led = OffsetList.Instance.GetValue(data[2]);
-
-            // Agrego un punto al final como indicador de "luz"
-            if (led != null && led == 1)
+            // --- LED indicator ---
+            if (OffsetList.Instance.GetValue(data[2]) == 1)
             {
-                if (Reader.Device.FeaturesBuffer[ini + 4] == CLEAR)
-                {
-                    Reader.Device.FeaturesBuffer[ini + 4] = DECIMAL_POINT;
-                }
-                else
-                {
-                    Reader.Device.FeaturesBuffer[ini + 4] += 160;
-                }
+                int ledPos = ini + 4;
+                Reader.Device.FeaturesBuffer[ledPos] =
+                    (byte)(Reader.Device.FeaturesBuffer[ledPos] == CLEAR
+                        ? DECIMAL_POINT
+                        : (byte)(Reader.Device.FeaturesBuffer[ledPos] + 160));
             }
-
-            _ = (Reader.Device?.SetFeature());
-
         }
+
 
 
         /// <summary>

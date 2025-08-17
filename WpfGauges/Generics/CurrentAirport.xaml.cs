@@ -1,4 +1,5 @@
 ﻿using MauiSoft.SRP.FsuipcWrapper;
+using MauiSoft.SRP.Helpers;
 using MauiSoft.SRP.MyExtensions;
 
 namespace MauiSoft.SRP.Gauges.Generics
@@ -8,6 +9,8 @@ namespace MauiSoft.SRP.Gauges.Generics
     {
 
         private readonly string[] _offsets;
+
+        string lastvalue ="";
 
         public CurrentAirport()
         {
@@ -27,21 +30,22 @@ namespace MauiSoft.SRP.Gauges.Generics
         {
             base.OnRender(drawingContext);
 
-            UpdateText();
+            // primero, solo llamar si label.Content es distinto de lastvalue
+            var currentContent = label.Content as string;
 
-        }
+            if (currentContent == lastvalue && !string.IsNullOrWhiteSpace(currentContent))
+                return;
 
-        private void UpdateText()
-        {
-            if (_offsets.Length < 1) return;
-
-            string? str = OffsetList.Instance.GetValue(_offsets[0]);
-
-            if (string.IsNullOrWhiteSpace(str))
-                str = "####";
+            // GETVALUE solo se ejecuta si necesitamos actualizar
+            var str = OffsetList.Instance.GetValue(_offsets[0]) as string;
+            if (string.IsNullOrEmpty(str))
+                return;
 
             label.Content = str;
+            lastvalue = str;
+
         }
+
 
     }
 }

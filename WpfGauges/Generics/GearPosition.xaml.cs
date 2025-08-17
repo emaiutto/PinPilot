@@ -18,6 +18,15 @@ namespace MauiSoft.SRP.Gauges.Generics
 
         private readonly ChangeTracker<bool> _GearDown_ThreeGreen_StateTracker = new();
 
+        private static readonly Brush[] GearColors = [
+            Brushes.Gray,   // índice 0 → gearPosition == 0
+            Brushes.Orange, // índice 1 → intermedio
+            Brushes.Green   // índice 2 → gearPosition == 16383
+        ];
+
+        private const int MaxGear = 16383;
+
+
         public GearPosition()
         {
             InitializeComponent();
@@ -54,30 +63,15 @@ namespace MauiSoft.SRP.Gauges.Generics
                 UpdateGearLed(Led_Left, _GearPosition_Left_StateTracker.Current);
             }
 
-            bool all3 = _GearPosition_Nose_StateTracker.Current == 16383 && _GearPosition_Right_StateTracker.Current == 16383 &&                _GearPosition_Left_StateTracker.Current == 16383;
+            bool all3 = _GearPosition_Nose_StateTracker.Current == MaxGear && _GearPosition_Right_StateTracker.Current == MaxGear &&                _GearPosition_Left_StateTracker.Current == MaxGear;
 
 
             AudioPlayer.Play("GearDown-ThreeGreen.mp3", _GearDown_ThreeGreen_StateTracker.HasChanged(all3) && _GearDown_ThreeGreen_StateTracker.Current);
 
         }
 
-        private static void UpdateGearLed(Rectangle led, int gearPosition)
-        {
-
-            if (gearPosition == 16383)
-            {
-                led.Fill = Brushes.Green;
-                
-            }
-            else if (gearPosition == 0)
-            {
-                led.Fill = Brushes.Gray;
-            }
-            else
-            {
-                led.Fill = Brushes.Orange;
-            }
-        }
+        private static void UpdateGearLed(Rectangle led, int gearPosition) =>
+            led.Fill = GearColors[(gearPosition == 0 ? 0 : 1) + (gearPosition == MaxGear ? 1 : 0)];
 
 
     }

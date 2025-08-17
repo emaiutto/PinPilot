@@ -7,8 +7,10 @@ namespace MauiSoft.SRP.Gauges
     public sealed class GaugeItem
     {
         public string[]? Data { get; set; }
+
         public string? Label { get; set; }
-      
+
+        public string? UpdateRate { get; set; }
     }
 
 
@@ -23,6 +25,8 @@ namespace MauiSoft.SRP.Gauges
         public string? GetLabel(string key) => 
             Dictionary?[key] != null ? Dictionary[key].Label : null;
 
+        public string? GetUpdateRate(string key) =>
+            Dictionary?[key] != null ? Dictionary[key].UpdateRate : null;
 
 
         #region SINGLETON

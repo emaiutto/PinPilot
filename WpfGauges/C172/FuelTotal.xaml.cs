@@ -1,73 +1,64 @@
-﻿using MauiSoft.SRP.FsuipcWrapper;
+﻿using FSUIPC;
 using MauiSoft.SRP.MyExtensions;
 
 namespace MauiSoft.SRP.Gauges.C172
 {
     public partial class FuelTotal : UserControl
     {
-        private readonly string[] _offsets;
+        private const string FuelLeftWingTank = "FuelLeftWingTank";
+        private const string FuelRightWingTank = "FuelRightWingTank";
+        private const string FSelC172State = "FSelC172State";
 
-        readonly SolidColorBrush solidColorBrush = new((Color)ColorConverter.ConvertFromString("#FF37FF00"));
+        private static readonly SolidColorBrush LedOn = new((Color)ColorConverter.ConvertFromString("#FF37FF00"));
+        private static readonly SolidColorBrush LedOff = Brushes.Gray;
 
-        public FuelTotal()
-        {
-            InitializeComponent();
+        private double _needleY;
 
-            _offsets = Gauge.Instance.GetOffsets(GetType().Name) ?? [];
-        }
+        public FuelTotal() => InitializeComponent();
 
         protected override void OnRender(DrawingContext drawingContext)
         {
+            base.OnRender(drawingContext);
 
-            base.OnRender(drawingContext); // nunca lo omitas si no dibujás nada custom
+            // Left tank
+            double leftTank = FSUIPCConnection.ReadLVar(FuelLeftWingTank);
+            double angleLeft = leftTank.MapRange(0, 26, 145, 36);
+            needle_left.RenderTransform = Graph.GetTransformGroup(ActualWidth * 0.05, _needleY, angleLeft, 0.4);
 
+            // Right tank
+            double rightTank = FSUIPCConnection.ReadLVar(FuelRightWingTank);
+            double angleRight = rightTank.MapRange(0, 26, -145, -36);
+            needle_right.RenderTransform = Graph.GetTransformGroup(ActualWidth * 1.5 - ActualWidth * 0.05, _needleY, angleRight, 0.4);
 
-            double y = -ActualHeight * 0.7;
-
-
-            //double left_tank = 15;
-
-            double left_tank = OffsetList.Instance.GetValue(_offsets[0]);
-
-            double angle_left = left_tank.MapRange(0, 26, 145, 36); // MAPPING OK!
-
-            needle_left.RenderTransform = Graph.GetTransformGroup(ActualWidth * 0.05, y, angle_left, 0.4);
-
-
-            //double right_tank = 15;
-
-            double right_tank = OffsetList.Instance.GetValue(_offsets[1]);
-
-            double angle_right = right_tank.MapRange(0, 26, -145, -36); // MAPPING OK!
-
-            needle_right.RenderTransform = Graph.GetTransformGroup(ActualWidth * 1.5 - ActualWidth * 0.05, y, angle_right, 0.4);
-
-
-            value.Content = Math.Round(left_tank + right_tank);
-            
+            // Total fuel
+            double total = Math.Round(leftTank + rightTank);
+            value.Content = total.ToString("0", CultureInfo.InvariantCulture);
             value.Foreground = Brushes.Orange;
 
+            // Fuel selector (0 = Left, 1 = Both, 2 = Right)
+            (bool leftSelected, bool rightSelected) = ((int)FSUIPCConnection.ReadLVar(FSelC172State)) switch
+            {
+                0 => (true, false),
+                1 => (true, true),
+                2 => (false, true),
+                _ => (false, false)
+            };
 
-            
-            // ESPECIFICO PARA EL C172
-
-            //byte left_sel_tank = OffsetList.Instance.GetValue(offsets[2]);
-            //byte right_sel_tank = OffsetList.Instance.GetValue(offsets[3]);
-
-            //SelTankLeft.Fill = left_sel_tank == 1 ? solidColorBrush : (Brush)Brushes.Gray;
-            //SelTankRight.Fill = right_sel_tank == 1 ? solidColorBrush : (Brush)Brushes.Gray;
-
-            //SelTankLeft.RenderTransform = Graph.GetTransformGroup(-6, 14, 0, 2);
-            //SelTankRight.RenderTransform = Graph.GetTransformGroup(7, 14, 0, 2);
-
-            //value.Content = total.ToString("0", CultureInfo.InvariantCulture);
-            // 3,785411784 litros (el GALON en sistema USA)
-
+            // Encender luces
+            SelTankLeft.Fill = leftSelected ? LedOn : LedOff;
+            SelTankRight.Fill = rightSelected ? LedOn : LedOff;
         }
 
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             value.FontSize = Width * FontSizeHelpers.Medium;
+
+            // precálculo del offset vertical de las agujas
+            _needleY = -ActualHeight * 0.7;
+
+            // posiciones fijas de los selectores de tanque
+            SelTankLeft.RenderTransform = Graph.GetTransformGroup(-6, 14, 0, 2);
+            SelTankRight.RenderTransform = Graph.GetTransformGroup(7, 14, 0, 2);
         }
     }
 }

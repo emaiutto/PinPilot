@@ -5,21 +5,26 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PlatformTarget>x64</PlatformTarget>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <Optimize>False</Optimize>
+    <Optimize>True</Optimize>
+    <IsTrimmable>False</IsTrimmable>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>True</Optimize>
+    <IsTrimmable>False</IsTrimmable>
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="fsuipcClient">
-      <HintPath>..\Libs\fsuipcClient.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\FsuipcWrapper\MauiSoft.SRP.FsuipcWrapper.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="MauiSoft.SRP.ArduinoComm">
       <HintPath>..\Libs\MauiSoft.SRP.ArduinoComm.dll</HintPath>
-    </Reference>
-    <Reference Include="MauiSoft.SRP.FsuipcWrapper">
-      <HintPath>..\Libs\MauiSoft.SRP.FsuipcWrapper.dll</HintPath>
     </Reference>
     <Reference Include="MauiSoft.SRP.GeoTools">
       <HintPath>..\Libs\MauiSoft.SRP.GeoTools.dll</HintPath>
