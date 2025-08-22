@@ -1,0 +1,88 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<OutputType>WinExe</OutputType>
+	<TargetFramework>net9.0-windows10.0.19041.0</TargetFramework>
+	<Nullable>enable</Nullable>
+	<UseWPF>true</UseWPF>
+	<ApplicationIcon>airplane.ico</ApplicationIcon>
+	<ImplicitUsings>enable</ImplicitUsings>
+	<PlatformTarget>x64</PlatformTarget>
+	<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	<Optimize>False</Optimize>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<Compile Remove="AssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<Content Include="airplane.ico" />
+	<Content Include="AssemblyInfo.cs">
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</Content>
+  </ItemGroup>
+
+  <ItemGroup>
+	<PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.8" />
+	<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.8" />
+	<PackageReference Include="NAudio" Version="2.2.1" />
+	<PackageReference Include="RJCP.SerialPortStream" Version="3.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MAUI.PinPilot.Devices\MAUI.PinPilot.Devices.csproj" />
+    <ProjectReference Include="..\MAUI.PinPilot.Fsuipc\MAUI.PinPilot.Fsuipc.csproj" />
+    <ProjectReference Include="..\MAUI.PinPilot.Gauges\MAUI.PinPilot.Gauges.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="MAUI.PinPilot.Audio">
+      <HintPath>..\Libs\MAUI.PinPilot.Audio.dll</HintPath>
+    </Reference>
+    <Reference Include="MAUI.PinPilot.Logger">
+      <HintPath>..\Libs\MAUI.PinPilot.Logger.dll</HintPath>
+    </Reference>
+    <Reference Include="MAUI.PinPilot.TinyHIDLibrary">
+      <HintPath>..\Libs\MAUI.PinPilot.TinyHIDLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+	<Compile Update="Properties\Resources.Designer.cs">
+	  <DesignTime>True</DesignTime>
+	  <AutoGen>True</AutoGen>
+	  <DependentUpon>Resources.resx</DependentUpon>
+	</Compile>
+	<Compile Update="Properties\Settings.Designer.cs">
+	  <DesignTimeSharedInput>True</DesignTimeSharedInput>
+	  <AutoGen>True</AutoGen>
+	  <DependentUpon>Settings.settings</DependentUpon>
+	</Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+	<EmbeddedResource Update="Properties\Resources.resx">
+	  <Generator>ResXFileCodeGenerator</Generator>
+	  <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+	</EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+
+	<None Update="appsettings.json">
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</None>
+
+	<None Update="Properties\Settings.settings">
+	  <Generator>SettingsSingleFileGenerator</Generator>
+	  <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+	</None>
+  </ItemGroup>
+
+
+	
+</Project>

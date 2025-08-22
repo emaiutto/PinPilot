@@ -1,0 +1,223 @@
+================================================================================
+LINDA Functions - A2A_C172
+================================================================================
+Created by LINDA 3.0.6 on 24 sep. 2018 @ 1915
+================================================================================
+
+CABIN LIGHTS
+============
+
+A172 FloodLight dim
+A172 FloodLight bright
+A172 FloodLight off
+A172 FloodLight toggle
+A172 InstrLight off
+A172 InstrLight dim
+A172 InstrLight bright
+A172 InstrLight toggle
+A172 PanelsLight off
+A172 PanelsLight dim
+A172 PanelsLight bright
+A172 PanelsLight toggle
+
+LIGHT KNOBS
+===========
+
+A172 InstrLight show
+A172 InstrLight plus
+A172 InstrLight plusfast
+A172 InstrLight minus
+A172 InstrLight minusfast
+A172 PanelsLight show
+A172 PanelsLight plus
+A172 PanelsLight plusfast
+A172 PanelsLight minus
+A172 PanelsLight minusfast
+A172 GaugesLight plus
+A172 GaugesLight plusfast
+A172 GaugesLight minus
+A172 GaugesLight minusfast
+A172 RadioLight plus
+A172 RadioLight plusfast
+A172 RadioLight minus
+A172 RadioLight minusfast
+A172 GlareshieldLight plus
+A172 GlareshieldLight plusfast
+A172 GlareshieldLight minus
+A172 GlareshieldLight minusfast
+A172 PedestalLight plus
+A172 PedestalLight plusfast
+A172 PedestalLight minus
+A172 PedestalLight minusfast
+
+ELECTRIC SWITCHES
+=================
+
+A172 Magneto start
+A172 Magneto both
+A172 Magneto left
+A172 Magneto right
+A172 Magneto stop
+A172 Magneto inc
+A172 Magneto dec
+A172 AnnLights test
+A172 AnnLights dim
+A172 AnnLights bright
+A172 AnnLights toggle
+A172 Alternator on
+A172 Alternator off
+A172 Alternator toggle
+A172 Battery on
+A172 Battery off
+A172 Battery toggle
+A172 Avionics on
+A172 Avionics off
+A172 Avionics toggle
+A172 FuelPump on
+A172 FuelPump off
+A172 FuelPump toggle
+A172 BeaconLight on
+A172 BeaconLight off
+A172 BeaconLight toggle
+A172 LandingLight on
+A172 LandingLight off
+A172 LandingLight toggle
+A172 TaxiLight on
+A172 TaxiLight off
+A172 TaxiLight toggle
+A172 NavLight on
+A172 NavLight off
+A172 NavLight toggle
+A172 StrobeLight on
+A172 StrobeLight off
+A172 StrobeLight toggle
+A172 PitotHeat on
+A172 PitotHeat off
+A172 PitotHeat toggle
+
+GPS CONTROLS
+============
+
+A172 GPS on
+A172 GPS off
+A172 GPS toggle
+
+AUTOPILOT KNOBS
+===============
+
+A172 AP HDG plus
+A172 AP HDG plusfast
+A172 AP HDG minus
+A172 AP HDG minusfast
+A172 AP ALT plus
+A172 AP ALT plusfast
+A172 AP ALT minus
+A172 AP ALT minusfast
+A172 AP VS plus
+A172 AP VS minus
+
+AUTOPILOT BUTTONS
+=================
+
+A172 AP Button hdg
+A172 AP Button nav
+A172 AP Button apr
+A172 AP Button rev
+A172 AP Button alt
+A172 AP Button arm
+A172 AP Button baro
+A172 AP Button up
+A172 AP Button dn
+A172 AP InnerKnob plus
+A172 AP InnerKnob minus
+A172 AP OuterKnob plus
+A172 AP OuterKnob minus
+
+NAV
+===
+
+A172 Nav1Ident on
+A172 Nav1Ident off
+A172 Nav1Ident toggle
+A172 Nav2Ident on
+A172 Nav2Ident off
+A172 Nav2Ident toggle
+A172 NavIdent toggle
+
+ADF
+===
+
+A172 ADFbuttonAdf on
+A172 ADFbuttonAdf off
+A172 ADFbuttonAdf toggle
+A172 ADFbuttonBfo on
+A172 ADFbuttonBfo off
+A172 ADFbuttonBfo toggle
+A172 ADFbuttonFrq click
+A172 ADFbuttonEt click
+A172 ADFbuttonReset click
+A172 ADFbuttonReset hold
+A172 ADFident on
+A172 ADFident off
+A172 ADFident toggle
+
+TRANSPONDER
+===========
+
+A172 Transponder cycle
+A172 Transponder inc
+A172 Transponder dec
+A172 Transponder off
+A172 Transponder stby
+A172 Transponder test
+A172 Transponder on
+A172 Transponder alt
+A172 Transponder show
+
+OTHER CONTROLS
+==============
+
+A172 FuelSelector show
+A172 FuelSelector inc
+A172 FuelSelector dec
+A172 FuelSelector left
+A172 FuelSelector right
+A172 FuelSelector both
+A172 FuelSelector toggle
+A172 FuelCutoff open
+A172 FuelCutoff close
+A172 FuelCutoff toggle
+A172 AltStaticAir on
+A172 AltStaticAir off
+A172 AltStaticAir toggle
+A172 TempUnits toggle
+A172 EGTref inc
+A172 EGTref incfast
+A172 EGTref dec
+A172 EGTref decfast
+A172 EGTref show
+
+CABIN TEMPERATURE
+=================
+
+A172 CabinHeat inc
+A172 CabinHeat incfast
+A172 CabinHeat dec
+A172 CabinHeat decfast
+A172 CabinHeat show
+A172 CabinVent inc
+A172 CabinVent incfast
+A172 CabinVent dec
+A172 CabinVent decfast
+A172 CabinVent show
+
+SYSTEM FUNCTIONS
+================
+
+A172 ADF select x
+Timer
+AdditionalInfo
+InitDsp (quiet)
+InitVars
+
+===========================================================================

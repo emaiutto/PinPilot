@@ -1,0 +1,41 @@
+﻿<Window x:Class="MauiSoft.SRP.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MauiSoft.SRP"
+        mc:Ignorable="d"
+        Title="Alas Virtuales: Información del Simulador de Vuelo - Copyright 2023-2025 - Esteban Maiutto" Height="720" Width="1280" FontFamily="Roboto Condensed" Margin="1,1,1,1" Foreground="White">
+        
+    <Grid>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <!-- Espacio para el contenido -->
+            <RowDefinition Height="Auto" />
+            <!-- Altura para el StatusBar -->
+        </Grid.RowDefinitions>
+
+        <WrapPanel Name="wrappanel1" Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+
+
+        <!-- StatusBar con un Slider para usar como zoom -->
+        <StatusBar Name="statusBar" Grid.Row="1" Background="LightGray" Margin="0,0,0,5">
+
+            <StatusBarItem>
+
+                <Slider Name="zoomSlider" Width="100" Minimum="1" Maximum="200" TickFrequency="1" TickPlacement="None" AutoToolTipPlacement="TopLeft"  ValueChanged="ZoomSlider_ValueChanged" />
+                
+            </StatusBarItem>
+
+            <StatusBarItem>
+                <Label Name="labelstatus1" Width="Auto" FontFamily ="Segoe UI" />
+            </StatusBarItem>
+            
+        </StatusBar>
+        
+    </Grid>
+
+
+
+</Window>

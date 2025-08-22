@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<TargetFramework>net9.0-windows10.0.19041.0</TargetFramework>
+	<ImplicitUsings>enable</ImplicitUsings>
+	<Nullable>enable</Nullable>
+	<PlatformTarget>x64</PlatformTarget>
+	<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+	<Optimize>True</Optimize>
+	<IsTrimmable>False</IsTrimmable>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+	<Optimize>True</Optimize>
+	<IsTrimmable>False</IsTrimmable>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<Compile Remove="FSUIPC\FlightSim.cs" />
+	<Compile Remove="FSUIPC\FsAltitude.cs" />
+	<Compile Remove="FSUIPC\FsVersion.cs" />
+	<Compile Remove="FSUIPC\MSFSVariableServices.cs" />
+	<Compile Remove="FSUIPC\PMDG_737_NGX_Offsets.cs" />
+	<Compile Remove="FSUIPC\PMDG_747QOTSII_Offsets.cs" />
+	<Compile Remove="FSUIPC\PMDG_777X_Offsets.cs" />
+	<Compile Remove="FSUIPC\PMDG_NGX_CDU_Screen.cs" />
+	<Compile Remove="FSUIPC\TextMenu.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+		<Using Include="System.Globalization" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<None Update="profiles\**\*.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	
+</Project>

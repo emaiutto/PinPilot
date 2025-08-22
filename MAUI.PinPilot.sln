@@ -1,0 +1,111 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33414.496
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{30387023-89E3-42B5-A26F-5FCFB316DDAC}"
+	ProjectSection(SolutionItems) = preProject
+		airplane.ico = airplane.ico
+		LICENSE.txt = LICENSE.txt
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		Libs\MAUI.PinPilot.Arduino.dll = Libs\MAUI.PinPilot.Arduino.dll
+		Libs\MAUI.PinPilot.Audio.dll = Libs\MAUI.PinPilot.Audio.dll
+		Libs\MAUI.PinPilot.GeoTools.dll = Libs\MAUI.PinPilot.GeoTools.dll
+		Libs\MAUI.PinPilot.Helpers.dll = Libs\MAUI.PinPilot.Helpers.dll
+		Libs\MAUI.PinPilot.Logger.dll = Libs\MAUI.PinPilot.Logger.dll
+		Libs\MAUI.PinPilot.MyExtensions.dll = Libs\MAUI.PinPilot.MyExtensions.dll
+		Libs\MAUI.PinPilot.TinyHIDLibrary.dll = Libs\MAUI.PinPilot.TinyHIDLibrary.dll
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{9FB97EB8-3DC8-43F0-BAB4-9304EDD80554}"
+	ProjectSection(SolutionItems) = preProject
+		Docs\FSUIPC4 Offsets Status.pdf = Docs\FSUIPC4 Offsets Status.pdf
+		Docs\P3D Controls.pdf = Docs\P3D Controls.pdf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "C172", "C172", "{183F7D7B-8D4D-43B7-B656-493A9E8017A4}"
+	ProjectSection(SolutionItems) = preProject
+		Docs\C172\A2A C172 Trainer - Variable list.pdf = Docs\C172\A2A C172 Trainer - Variable list.pdf
+		Docs\C172\C172 checklist.pdf = Docs\C172\C172 checklist.pdf
+		Docs\C172\Cessna172.pdf = Docs\C172\Cessna172.pdf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PMDG 737NGX", "PMDG 737NGX", "{75C0B075-7AE4-45D5-A7F9-A1ADE626E9EB}"
+	ProjectSection(SolutionItems) = preProject
+		Docs\PMDG 737NGX\Offset Mapping for PMDG 737NGX.pdf = Docs\PMDG 737NGX\Offset Mapping for PMDG 737NGX.pdf
+		Docs\PMDG 737NGX\Offset Mapping for PMDG 747QOTSII.pdf = Docs\PMDG 737NGX\Offset Mapping for PMDG 747QOTSII.pdf
+		Docs\PMDG 737NGX\Offset Mapping for PMDG 777X.pdf = Docs\PMDG 737NGX\Offset Mapping for PMDG 777X.pdf
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LUA", "LUA", "{69B48B4F-2CAA-4DFD-90BC-16D24F66F775}"
+	ProjectSection(SolutionItems) = preProject
+		Docs\PMDG 737NGX\LUA\actions.lua = Docs\PMDG 737NGX\LUA\actions.lua
+		Docs\PMDG 737NGX\LUA\ident.lua = Docs\PMDG 737NGX\LUA\ident.lua
+		Docs\PMDG 737NGX\LUA\PMDG 737NGX-Functions.txt = Docs\PMDG 737NGX\LUA\PMDG 737NGX-Functions.txt
+		Docs\PMDG 737NGX\LUA\user.lua = Docs\PMDG 737NGX\LUA\user.lua
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LUA", "LUA", "{1A4B30AB-78D9-4237-AAD3-B9EB238AA2EA}"
+	ProjectSection(SolutionItems) = preProject
+		Docs\C172\LUA\A2A_C172-Functions.txt = Docs\C172\LUA\A2A_C172-Functions.txt
+		Docs\C172\LUA\actions.lua = Docs\C172\LUA\actions.lua
+		Docs\C172\LUA\ident.lua = Docs\C172\LUA\ident.lua
+		Docs\C172\LUA\user.lua = Docs\C172\LUA\user.lua
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAUI.PinPilot.Devices", "MAUI.PinPilot.Devices\MAUI.PinPilot.Devices.csproj", "{7378A9EA-9979-DE3F-1D56-0ABDB8436093}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAUI.PinPilot.Fsuipc", "MAUI.PinPilot.Fsuipc\MAUI.PinPilot.Fsuipc.csproj", "{EA1C8FC8-26CB-3AA2-2104-58AAD6E493A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAUI.PinPilot.Gauges", "MAUI.PinPilot.Gauges\MAUI.PinPilot.Gauges.csproj", "{FB85C0D7-964B-48D5-1E9B-72B243F4D1E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAUI.PinPilot.Main", "MAUI.PinPilot.Main\MAUI.PinPilot.Main.csproj", "{994F6092-9E0E-82A1-8F8C-152A395B115E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Discovery", "Discovery\Discovery.csproj", "{DE9DBC18-1F64-46C6-87FF-2B9C6DEF49AB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7378A9EA-9979-DE3F-1D56-0ABDB8436093}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7378A9EA-9979-DE3F-1D56-0ABDB8436093}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7378A9EA-9979-DE3F-1D56-0ABDB8436093}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7378A9EA-9979-DE3F-1D56-0ABDB8436093}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA1C8FC8-26CB-3AA2-2104-58AAD6E493A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA1C8FC8-26CB-3AA2-2104-58AAD6E493A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA1C8FC8-26CB-3AA2-2104-58AAD6E493A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA1C8FC8-26CB-3AA2-2104-58AAD6E493A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB85C0D7-964B-48D5-1E9B-72B243F4D1E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB85C0D7-964B-48D5-1E9B-72B243F4D1E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB85C0D7-964B-48D5-1E9B-72B243F4D1E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB85C0D7-964B-48D5-1E9B-72B243F4D1E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{994F6092-9E0E-82A1-8F8C-152A395B115E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{994F6092-9E0E-82A1-8F8C-152A395B115E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{994F6092-9E0E-82A1-8F8C-152A395B115E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{994F6092-9E0E-82A1-8F8C-152A395B115E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE9DBC18-1F64-46C6-87FF-2B9C6DEF49AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE9DBC18-1F64-46C6-87FF-2B9C6DEF49AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE9DBC18-1F64-46C6-87FF-2B9C6DEF49AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE9DBC18-1F64-46C6-87FF-2B9C6DEF49AB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {30387023-89E3-42B5-A26F-5FCFB316DDAC}
+		{9FB97EB8-3DC8-43F0-BAB4-9304EDD80554} = {30387023-89E3-42B5-A26F-5FCFB316DDAC}
+		{183F7D7B-8D4D-43B7-B656-493A9E8017A4} = {9FB97EB8-3DC8-43F0-BAB4-9304EDD80554}
+		{75C0B075-7AE4-45D5-A7F9-A1ADE626E9EB} = {9FB97EB8-3DC8-43F0-BAB4-9304EDD80554}
+		{69B48B4F-2CAA-4DFD-90BC-16D24F66F775} = {75C0B075-7AE4-45D5-A7F9-A1ADE626E9EB}
+		{1A4B30AB-78D9-4237-AAD3-B9EB238AA2EA} = {183F7D7B-8D4D-43B7-B656-493A9E8017A4}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {567D543D-F90A-4A8C-BED7-3C751A536EA3}
+	EndGlobalSection
+EndGlobal

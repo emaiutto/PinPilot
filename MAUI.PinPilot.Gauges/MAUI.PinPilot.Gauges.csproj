@@ -1,0 +1,141 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<TargetFramework>net9.0-windows10.0.19041.0</TargetFramework>
+	<Nullable>enable</Nullable>
+	<UseWPF>true</UseWPF>
+	<SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
+	<ImplicitUsings>enable</ImplicitUsings>
+	<PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<None Remove="Resources\B737_STAB_TRIM.png" />
+	<None Remove="Resources\B737_STAB_TRIM_NEEDLE.png" />
+	<None Remove="Resources\C172_fuel_gauge.jpg" />
+	<None Remove="Resources\c172_tachometer.png" />
+	<None Remove="Resources\c172_vs_frame.png" />
+	<None Remove="Resources\c172_vs_needle.png" />
+	<None Remove="Resources\frente.png" />
+	<None Remove="Resources\needle.png" />
+	<None Remove="Resources\onfly.png" />
+	<None Remove="Resources\onground.png" />
+	<None Remove="Resources\wind.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MAUI.PinPilot.Fsuipc\MAUI.PinPilot.Fsuipc.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="MAUI.PinPilot.Arduino">
+      <HintPath>..\Libs\MAUI.PinPilot.Arduino.dll</HintPath>
+    </Reference>
+    <Reference Include="MAUI.PinPilot.Audio">
+      <HintPath>..\Libs\MAUI.PinPilot.Audio.dll</HintPath>
+    </Reference>
+    <Reference Include="MAUI.PinPilot.GeoTools">
+      <HintPath>..\Libs\MAUI.PinPilot.GeoTools.dll</HintPath>
+    </Reference>
+    <Reference Include="MAUI.PinPilot.Helpers">
+      <HintPath>..\Libs\MAUI.PinPilot.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="MAUI.PinPilot.MyExtensions">
+      <HintPath>..\Libs\MAUI.PinPilot.MyExtensions.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+	<Resource Include="Resources\B737_STAB_TRIM.png">
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</Resource>
+	<Resource Include="Resources\B737_STAB_TRIM_NEEDLE.png">
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</Resource>
+	<Resource Include="Resources\C172_fuel_gauge.jpg">
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</Resource>
+	<Resource Include="Resources\c172_tachometer.png">
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</Resource>
+	<Resource Include="Resources\c172_vs_frame.png">
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</Resource>
+	<Resource Include="Resources\c172_vs_needle.png">
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</Resource>
+	<Resource Include="Resources\frente.png">
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</Resource>
+	<Resource Include="Resources\needle.png">
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</Resource>
+	<Resource Include="Resources\onfly.png">
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</Resource>
+	<Resource Include="Resources\onground.png">
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</Resource>
+	<Resource Include="Resources\wind.png">
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+	<Using Include="System.Globalization" />
+	<Using Include="System.IO" />
+	<Using Include="System.Reflection" />
+	<Using Include="System.Windows" />
+	<Using Include="System.Windows.Controls" />
+	<Using Include="System.Windows.Media" />
+	<Using Include="System.Windows.Media.Imaging" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<Compile Update="Models\C172\Tachometer.xaml.cs">
+	  <SubType>Code</SubType>
+	</Compile>
+	<Compile Update="Models\Maule\Prop_RPM.xaml.cs">
+	  <SubType>Code</SubType>
+	</Compile>
+	<Compile Update="Models\NGX\B737_STAB_TRIM.xaml.cs">
+	  <SubType>Code</SubType>
+	</Compile>
+	<Compile Update="Properties\Resources.Designer.cs">
+	  <DesignTime>True</DesignTime>
+	  <AutoGen>True</AutoGen>
+	  <DependentUpon>Resources.resx</DependentUpon>
+	</Compile>
+	<Compile Update="Properties\Settings.Designer.cs">
+	  <DesignTimeSharedInput>True</DesignTimeSharedInput>
+	  <AutoGen>True</AutoGen>
+	  <DependentUpon>Settings.settings</DependentUpon>
+	</Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+	<EmbeddedResource Update="Properties\Resources.resx">
+	  <Generator>PublicResXFileCodeGenerator</Generator>
+	  <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+	</EmbeddedResource>
+  </ItemGroup>
+
+	<ItemGroup>
+		<None Update="audio\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="Properties\Settings.settings">
+	    <Generator>SettingsSingleFileGenerator</Generator>
+	    <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+	  </None>
+	</ItemGroup>
+	
+
+</Project>
