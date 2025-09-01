@@ -500,13 +500,13 @@ public class Offset<T> : Offset
 				throw new Exception("Must set a size set for ArrayOrStringLength for Byte[], BitArray, FsBitArray or String");
 			}
 			break;
-		case fsuipcDataType.TypeFsLatitude:
-		case fsuipcDataType.TypeFsLongitude:
-			if (ArrayOrStringLength != 4 && ArrayOrStringLength != 8)
-			{
-				new Exception("Must set a size for FsLongitude or FsLatitude. Can only be 4 or 8 Bytes.");
-			}
-			break;
+		//case fsuipcDataType.TypeFsLatitude:
+		//case fsuipcDataType.TypeFsLongitude:
+		//	if (ArrayOrStringLength != 4 && ArrayOrStringLength != 8)
+		//	{
+		//		new Exception("Must set a size for FsLongitude or FsLatitude. Can only be 4 or 8 Bytes.");
+		//	}
+		//	break;
 		default:
 			if (ArrayOrStringLength != 0)
 			{

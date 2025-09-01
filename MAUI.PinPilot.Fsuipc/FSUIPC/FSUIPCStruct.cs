@@ -8,81 +8,81 @@ namespace FSUIPC;
 
 public abstract class FSUIPCStruct
 {
-	internal bool write
-	{
-		get
-		{
-			bool flag = false;
-			FieldInfo[] fields = GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-			foreach (FieldInfo fieldInfo in fields)
-			{
-				List<IStructField> list = new List<IStructField>();
-				if (fieldInfo.FieldType.GetInterface("IStructFieldArray") != null)
-				{
-					list.AddRange(((IStructFieldArray)fieldInfo.GetValue(this)).fields);
-				}
-				else if (fieldInfo.FieldType.GetInterface("IStructField") != null)
-				{
-					list.Add((IStructField)fieldInfo.GetValue(this));
-				}
-				foreach (IStructField item in list)
-				{
-					switch (item.DataType)
-					{
-					case fsuipcDataType.TypeBitArray:
-					{
-						BitArray bitArray = (BitArray)item.Value;
-						if (bitArray != null)
-						{
-							BitArray bitArray2 = (BitArray)item.OldValue;
-							bool flag3 = true;
-							for (int k = 0; k < bitArray2.Length; k++)
-							{
-								flag3 &= bitArray2[k] == bitArray[k];
-							}
-							flag = flag || !flag3;
-						}
-						break;
-					}
-					case fsuipcDataType.TypeFsBitArray:
-					{
-						FsBitArray fsBitArray = (FsBitArray)item.Value;
-						if (fsBitArray != null)
-						{
-							FsBitArray fsBitArray2 = (FsBitArray)item.OldValue;
-							bool flag4 = true;
-							for (int l = 0; l < fsBitArray2.Length; l++)
-							{
-								flag4 &= fsBitArray2[l] == fsBitArray[l];
-							}
-							flag = flag || !flag4;
-						}
-						break;
-					}
-					case fsuipcDataType.TypeByteArray:
-					{
-						byte[] array = (byte[])item.Value;
-						if (array != null)
-						{
-							byte[] array2 = (byte[])item.OldValue;
-							bool flag2 = true;
-							for (int j = 0; j < array2.Length; j++)
-							{
-								flag2 &= array2[j] == array[j];
-							}
-							flag = flag || !flag2;
-						}
-						break;
-					}
-					default:
-						flag |= item.Write;
-						break;
-					}
-				}
-			}
-			return flag;
-		}
-	}
+	//internal bool write
+	//{
+	//	get
+	//	{
+	//		bool flag = false;
+	//		FieldInfo[] fields = GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+	//		foreach (FieldInfo fieldInfo in fields)
+	//		{
+	//			List<IStructField> list = new List<IStructField>();
+	//			if (fieldInfo.FieldType.GetInterface("IStructFieldArray") != null)
+	//			{
+	//				list.AddRange(((IStructFieldArray)fieldInfo.GetValue(this)).fields);
+	//			}
+	//			else if (fieldInfo.FieldType.GetInterface("IStructField") != null)
+	//			{
+	//				list.Add((IStructField)fieldInfo.GetValue(this));
+	//			}
+	//			foreach (IStructField item in list)
+	//			{
+	//				switch (item.DataType)
+	//				{
+	//				case fsuipcDataType.TypeBitArray:
+	//				{
+	//					BitArray bitArray = (BitArray)item.Value;
+	//					if (bitArray != null)
+	//					{
+	//						BitArray bitArray2 = (BitArray)item.OldValue;
+	//						bool flag3 = true;
+	//						for (int k = 0; k < bitArray2.Length; k++)
+	//						{
+	//							flag3 &= bitArray2[k] == bitArray[k];
+	//						}
+	//						flag = flag || !flag3;
+	//					}
+	//					break;
+	//				}
+	//				case fsuipcDataType.TypeFsBitArray:
+	//				{
+	//					FsBitArray fsBitArray = (FsBitArray)item.Value;
+	//					if (fsBitArray != null)
+	//					{
+	//						FsBitArray fsBitArray2 = (FsBitArray)item.OldValue;
+	//						bool flag4 = true;
+	//						for (int l = 0; l < fsBitArray2.Length; l++)
+	//						{
+	//							flag4 &= fsBitArray2[l] == fsBitArray[l];
+	//						}
+	//						flag = flag || !flag4;
+	//					}
+	//					break;
+	//				}
+	//				case fsuipcDataType.TypeByteArray:
+	//				{
+	//					byte[] array = (byte[])item.Value;
+	//					if (array != null)
+	//					{
+	//						byte[] array2 = (byte[])item.OldValue;
+	//						bool flag2 = true;
+	//						for (int j = 0; j < array2.Length; j++)
+	//						{
+	//							flag2 &= array2[j] == array[j];
+	//						}
+	//						flag = flag || !flag2;
+	//					}
+	//					break;
+	//				}
+	//				default:
+	//					flag |= item.Write;
+	//					break;
+	//				}
+	//			}
+	//		}
+	//		return flag;
+	//	}
+	//}
 
 	internal int getStuctLength()
 	{

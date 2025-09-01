@@ -1,102 +1,64 @@
-﻿using MAUI.PinPilot.Fsuipc;
-using MAUI.PinPilot.Helpers;
+﻿using MAUI.PinPilot.MyExtensions;
 
 namespace MAUI.PinPilot.Devices
 {
-
-    public class AnalogController(int dead_zone, int axis_raw_min, int axis_raw_max, float alpha, int delta)
+    public class AnalogController(
+        int axisRawMin,
+        int axisRawMax,
+        short axisRangeMin,
+        short axisRangeMax,
+        float alpha,
+        ushort delta,
+        int deadZone = 0,
+        bool inverted = false)
     {
-        
-        private readonly int Dead_Zone = dead_zone;
+        public short Value { get; private set; }
 
-        private readonly int Axis_Raw_Min = axis_raw_min;
+        private readonly int _axisRawMin = axisRawMin;
+        private readonly int _axisRawMax = axisRawMax;
+        private readonly short _axisRangeMin = axisRangeMin;
+        private readonly short _axisRangeMax = axisRangeMax;
+        private readonly float _alpha = alpha;
+        private readonly float _oneMinusAlpha = 1f - alpha;
+        private readonly ushort _delta = delta;
+        private readonly int _deadZone = deadZone;
+        private readonly bool _inverted = inverted;
 
-        private readonly int Axis_Raw_Max = axis_raw_max;
+        private float _smoothedValue;
 
-        private readonly float Alpha = alpha;
-
-        private readonly float OneMinusAlpha = 1f - alpha;
-
-        private readonly ValueTracker _Tracker = new(delta);
-
-        private float _smoothedValue = 0f;
-
-        const int AXIS_RANGE_MIN = -16384, AXIS_RANGE_MAX = 16384;
-
-
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ProcessRawRudder(int raw)
+        public void Process(int raw)
         {
-
-            #if DEBUG
-            //Debug.WriteLine($"RAW {raw}");
-            #endif
-
-            // Mapear a rango
-            int axis = (int)((long)(raw - Axis_Raw_Min) * (AXIS_RANGE_MAX - AXIS_RANGE_MIN) / (Axis_Raw_Max - Axis_Raw_Min) + AXIS_RANGE_MIN);
-
+            // Escalar a rango destino
+            int axis = raw.MapRange(
+                _axisRawMin, _axisRawMax,
+                _inverted ? _axisRangeMax : _axisRangeMin,
+                _inverted ? _axisRangeMin : _axisRangeMax
+            );
 
             // Aplicar zona muerta
-            if (axis >= -Dead_Zone && axis <= Dead_Zone)
-                axis = 0;
-            else
-                axis = axis < 0 ? axis + Dead_Zone : axis - Dead_Zone;
-
-
-            // Filtrado EMA
-            _smoothedValue = Alpha * axis + OneMinusAlpha * _smoothedValue;
-
-            int filteredValue = (int)_smoothedValue;
-
-
-            // Rango seguro y cambio significativo
-            if (filteredValue < AXIS_RANGE_MIN) filteredValue = AXIS_RANGE_MIN;
-            else if (filteredValue > AXIS_RANGE_MAX) filteredValue = AXIS_RANGE_MAX;
-
-            if (_Tracker.HasChanged(filteredValue))
+            if (_deadZone > 0)
             {
-                #if DEBUG
-                //Debug.WriteLine($"{filteredValue}");
-                #endif
-
-                FSUIPCHelper.Instance.Execute("AXIS_RUDDER_SET", filteredValue);
+                if (Math.Abs(axis) <= _deadZone)
+                {
+                    axis = 0;
+                }
+                else
+                {
+                    axis -= Math.Sign(axis) * _deadZone;
+                }
             }
-        }
 
+            // Filtrado exponencial (EMA)
+            _smoothedValue = _alpha * axis + _oneMinusAlpha * _smoothedValue;
 
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void ProcessRawThrottle(int raw)
-        {
-
-            #if DEBUG
-            //Debug.WriteLine($"RAW {raw}");
-            #endif
-
-            // Mapear el raw a la escala interna
-            int axis = (int)((long)(raw - Axis_Raw_Min) *
-                        (AXIS_RANGE_MAX - AXIS_RANGE_MIN) /
-                        (Axis_Raw_Max - Axis_Raw_Min) + AXIS_RANGE_MIN);
-
-            // Filtrado EMA (exponencial)
-            _smoothedValue = Alpha * axis + OneMinusAlpha * _smoothedValue;
-
-            int filteredValue = (int)_smoothedValue;
-
-            // Clampear al rango válido
-            if (filteredValue < AXIS_RANGE_MIN) filteredValue = AXIS_RANGE_MIN;
-            else if (filteredValue > AXIS_RANGE_MAX) filteredValue = AXIS_RANGE_MAX;
-
-            // Enviar solo si hubo cambio significativo
-            if (_Tracker.HasChanged(filteredValue))
+            // Actualizar valor solo si supera Delta
+            short newValue = short.Clamp((short)_smoothedValue, _axisRangeMin, _axisRangeMax);
+            
+            if (Math.Abs(newValue - Value) > _delta)
             {
-                #if DEBUG
-                //Debug.WriteLine($"{filteredValue}");
-                #endif
-
-                FSUIPCHelper.Instance.Execute("AXIS_THROTTLE_SET", filteredValue);
+                Value = newValue;
             }
         }
 
     }
-
 }

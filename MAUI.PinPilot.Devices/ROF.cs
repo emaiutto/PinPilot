@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using FSUIPC;
 using MAUI.PinPilot.Helpers;
 using MAUI.PinPilot.MyExtensions;
 using MAUI.PinPilot.TinyHIDLibrary;
@@ -8,19 +9,42 @@ namespace MAUI.PinPilot.Devices
 
     public delegate void Handler();
 
-    public sealed class ROF : HidDeviceId, IDisposable
+    public sealed class ROF : IDisposable
     {
+
+        // Rudder
+        private readonly Offset<short> _offset_rudder = new(0x0BBA); // (signed 16-bit, -16383..16383)
+
+        private readonly AnalogController _axis_rudder 
+            = new(axisRawMin: -50, axisRawMax: 280, axisRangeMin: -16383, axisRangeMax: 16383, alpha: 0.9f, delta: 256, deadZone: 4096, inverted: true);
+
+        
+        // Throttle
+        private readonly Offset<short> _offset_throttle = new(0x089A); // –4096 +16384 (segun documentacion)
+
+        private readonly AnalogController _axis_throttle 
+            = new(axisRawMin: 7, axisRawMax: 905, axisRangeMin: -4096, axisRangeMax: 16383, alpha: 0.9f, delta: 256);
+
+        
+
+        public GearController gearController = new(bitUp: 5, bitDown: 6);
+
+        private readonly ButtonEdgeTracker _tracker = new();
+
+
+        private readonly HidReader? Reader00;
+        private readonly HidReader? Reader01;
+        private readonly HidReader? Reader02;
+        private readonly HidReader? Reader03;
+
 
         public ROF(int vendorId, int productId)
         {
 
-            VendorId = vendorId;
-            ProductId = productId;
-
-            Reader00 = new HidReader(VendorId, ProductId, OnReport00, "mi_00");
-            Reader01 = new HidReader(VendorId, ProductId, OnReport01, "mi_01");
-            Reader02 = new HidReader(VendorId, ProductId, OnReport02, "mi_02");
-            Reader03 = new HidReader(VendorId, ProductId, OnReport03, "mi_03");
+            Reader00 = new HidReader(vendorId, productId, OnReport00, "mi_00", delayMs: 0);
+            Reader01 = new HidReader(vendorId, productId, OnReport01, "mi_01", delayMs: 0);
+            Reader02 = new HidReader(vendorId, productId, OnReport02, "mi_02", delayMs: 0);
+            Reader03 = new HidReader(vendorId, productId, OnReport03, "mi_03", delayMs: 0);
 
         }
 
@@ -31,20 +55,6 @@ namespace MAUI.PinPilot.Devices
             Reader02?.Start();
             Reader03?.Start();
         }
-
-        private AnalogController _rudderProcessor = new(dead_zone: 2048, axis_raw_min: -130, axis_raw_max: 295, alpha: 0.9f, delta: 256);
-
-        private AnalogController _throttleProcessor = new(dead_zone: 0, axis_raw_min: 905, axis_raw_max: 7, alpha: 0.9f, delta: 256);
-
-        public GearController gearController = new(bitUp: 5, bitDown: 6);
-
-        private readonly ButtonEdgeTracker _tracker = new();
-        
-
-        private readonly HidReader? Reader00;
-        private readonly HidReader? Reader01;
-        private readonly HidReader? Reader02;
-        private readonly HidReader? Reader03;
 
 
         #region Events
@@ -104,8 +114,6 @@ namespace MAUI.PinPilot.Devices
         #endregion
 
 
-
-
         private const int Bit0 = 0;
         private const int Bit1 = 1;
         private const int Bit2 = 2;
@@ -116,9 +124,6 @@ namespace MAUI.PinPilot.Devices
         private const int Bit7 = 7;
 
 
-
-
-
         private Task OnReport00()
         {
 
@@ -126,6 +131,8 @@ namespace MAUI.PinPilot.Devices
                 return Task.CompletedTask;
 
             var buffer = Reader00.Device.InputBuffer;
+
+            _axis_rudder.Process(ReadAxisX(buffer, 1));
 
             byte B6 = buffer[6];
             byte B7 = buffer[7];
@@ -166,9 +173,6 @@ namespace MAUI.PinPilot.Devices
 
             if (_tracker.CheckRisingEdge(nameof(APP_BUTTON), buffer[9].IsBitSet(Bit7))) APP_BUTTON?.Invoke();
 
-
-            _rudderProcessor.ProcessRawRudder(Get10BitSigned((buffer[4] >> 6 | buffer[5] << 2) & 0x3FF));
-
             return Task.CompletedTask;
         }
 
@@ -179,6 +183,10 @@ namespace MAUI.PinPilot.Devices
 
 
             var buffer = Reader01.Device.InputBuffer;
+
+
+            //_axis_throttle.Process(ReadAxisX(buffer, 1));
+     
 
             byte B6 = buffer[6];
             byte B7 = buffer[7];
@@ -210,8 +218,6 @@ namespace MAUI.PinPilot.Devices
 
             if (_tracker.CheckRisingEdge(nameof(CRSR_BUTTON), buffer[9].IsBitSet(Bit5))) CRSR_BUTTON?.Invoke();
 
-
-            _throttleProcessor.ProcessRawThrottle(Get10BitSigned((buffer[3] >> 4 | buffer[4] << 4) & 0x3FF) + 512);
 
             return Task.CompletedTask;
         }
@@ -256,6 +262,7 @@ namespace MAUI.PinPilot.Devices
         }
 
 
+ 
 
         #region Liberar Recursos
 
@@ -273,34 +280,33 @@ namespace MAUI.PinPilot.Devices
         #endregion
 
 
+
+
+        // --- Extraer eje X (10 bits, little-endian, signo two's-complement) ---
+        // offset = índice del primer byte donde empieza el campo X
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static int Get10BitSigned(int raw) => (raw & 0x200) != 0 ? raw | unchecked((int)0xFFFFFC00) : raw;
+        static int ReadAxisX(byte[] buffer, int offset = 1)
+        {
+            // tomar LSB y los 2 bits bajos del siguiente byte (bits 8..9)
+            int low = buffer[offset];                // byte con bits 0..7
+            int high2 = buffer[offset + 1] & 0x03;   // solo bits 0..1 del siguiente byte
+
+            int raw10 = (high2 << 8) | low;          // 0..1023 (10 bits)
+
+            // convertir a signed 10-bit (two's complement): -512..+511
+            int signed = (raw10 & 0x200) != 0 ? raw10 - 1024 : raw10;
+            
+            return signed; // resultado centrado en 0 (aprox -512..+511)
+        }
 
 
-        //private static void Analyzer(int player, byte[] buffer)
-        //{
+        public void UpdateControls()
+        {
+            _offset_rudder.Value = _axis_rudder.Value;
 
-        //    for (int i = 0; i <= 9; i++)
-        //    {
-        //        byte b = buffer[i];
-
-        //        if (b == 0) continue;
-
-        //        int v = (buffer[i] & 0x3F);
-
-        //        //// reordenar: esto lo vuelve lineal de 0 a 63
-        //        int fixedRaw = v <= 31 ? 31 - v : 95 - v;
-
-        //        string strbin = Convert.ToString(b, 2).PadLeft(8, '0');
-
-        //        // int j = strbin.IndexOf('1');
-
-        //        Debug.WriteLine($"PLAYER {player} : BYTE {i} -> {strbin} | {fixedRaw}");
-
-        //    }
-
-        //}
-
+            //_offset_throttle.Value = _axis_throttle.Value;
+        }
 
     }
 

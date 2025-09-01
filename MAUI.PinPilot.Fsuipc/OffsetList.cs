@@ -4,224 +4,131 @@ using FSUIPC;
 
 namespace MAUI.PinPilot.Fsuipc
 {
-
     public sealed class OffsetItem
     {
-
-        public int Address { get; set; } // HEX VALUE OFFSET
-
-        public string? DataType { get; set; } // DATATYPE VALUE
-
-        public int? Length { get; set; } // Only for STRING (EX: ICAO)
-
-        public float? Factor { get; set; } // Factor de Conversión
-
-        public bool? Frecuency { get; set; } // Tranformacion BCD -> FLOAT
-
-        public object? Offset { get; set; } // OBJECT AS "POINTER"
-
+        public int Address { get; set; }          // Dirección en memoria (hexadecimal)
+        public string? DataType { get; set; }     // Tipo de dato (Byte, Int16, UInt16, etc.)
+        public int? Length { get; set; }          // Solo para strings
+        public float? Factor { get; set; }        // Factor de conversión
+        public bool? Frecuency { get; set; }      // Transformación especial (ej: BCD -> float)
+        public object? Offset { get; set; }       // Objeto Offset<T>
     }
-
 
     public sealed class OffsetList
     {
-        public Dictionary<string, OffsetItem> Dictionary { get; }
+        private readonly Dictionary<string, OffsetItem> _dictionary = [];
+        private readonly Lock _lock = new();
 
-        public int Count => Dictionary.Count;
+        public IReadOnlyDictionary<string, OffsetItem> Dictionary => _dictionary;
 
+        #region SINGLETON (thread-safe)
+        private static readonly Lazy<OffsetList> _instance =
+            new(() => new OffsetList(), isThreadSafe: true);
 
-        #region SINGLETON
+        public static OffsetList Instance => _instance.Value;
 
-        private static OffsetList? _Instance;
-
-        public static OffsetList Instance
-        {
-            get
-            {
-                _Instance ??= new OffsetList();
-
-                return _Instance;
-            }
-        }
-
-        private OffsetList()
-        {
-            Dictionary = [];
-
-            Load();
-        }
-
+        private OffsetList() => Load();
         #endregion
-
 
         private void Load()
         {
-
-            var files = new List<string>();
-
-
-            //string DefaultPath = Path.Combine(Environment.CurrentDirectory, "profiles", "default", "offsets");
-
-            //files.InsertRange(0, Directory.GetFiles(DefaultPath, "*.json", SearchOption.TopDirectoryOnly));
-
-
-            string AircraftPath = Path.Combine(Environment.CurrentDirectory, "profiles", Profile.Instance.AircraftProfile, "offsets");
-
-            files.InsertRange(0, Directory.GetFiles(AircraftPath, "*.json", SearchOption.TopDirectoryOnly));
-
-
-            foreach (var filename in files)
+            lock (_lock)
             {
+                _dictionary.Clear();
 
-                string data = File.ReadAllText(filename);
+                var files = new List<string>();
 
-                Dictionary<string, OffsetItem>? _Aux = null;
+                // TODO: activar default si lo necesitás
+                // string defaultPath = Path.Combine(Environment.CurrentDirectory, "profiles", "default", "offsets");
+                // files.AddRange(Directory.GetFiles(defaultPath, "*.json"));
 
-                try
+                string aircraftPath = Path.Combine(
+                    Environment.CurrentDirectory,
+                    "profiles",
+                    Profile.Instance.AircraftProfile,
+                    "offsets");
+
+                if (!Directory.Exists(aircraftPath))
+                    return;
+
+                files.AddRange(Directory.GetFiles(aircraftPath, "*.json"));
+
+                foreach (var filename in files)
                 {
-                    _Aux = JsonConvert.DeserializeObject<Dictionary<string, OffsetItem>>(data);
-                }
-                catch { }
-
-
-                if (_Aux == null) return;
-
-                foreach (var value in _Aux)
-                {
-
-                    OffsetItem item = new()
-                    {
-                        Address = value.Value.Address,
-                        DataType = value.Value.DataType,
-
-                        Factor = value.Value.Factor,
-                        Length = value.Value.Length,
-                        Frecuency = value.Value.Frecuency
-
-                    };
-
-                    // IMPORTANTE!!! En datatype en el JSON siempre usar los tipos .NET (sin el namespace System.)
-                    // https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/built-in-types?redirectedfrom=MSDN
-
-                    Type? tipo = null; // tipo interno del generic (DataType). El tipo de datos del OFFSET
-
-
                     try
                     {
-                        if (item.DataType != null)
-                            tipo = Type.GetType($"System.{item.DataType}"); // Si no hace MATCHING... sale NULL!
-                    }
-                    catch
-                    {
-                        // LOG (tipo de dato erroreo. Verificar JSON)
-                        Debug.WriteLine("Utilizar tipo de datos .NET sin el namespace System.");
-                    }
+                        var data = File.ReadAllText(filename);
+                        var aux = JsonConvert.DeserializeObject<Dictionary<string, OffsetItem>>(data);
 
-                    if (tipo == null)
-                    {
-                        Debug.WriteLine("Utilizar tipo de datos .NET sin el namespace System.");
-                        continue; // LOG (tipo de dato erroreo. Verificar JSON)
-                    }
+                        if (aux == null)
+                            continue;
 
-
-
-                    // Construye el Generic en base al DataType (interno)
-                    
-                    Type? tipoGenerado = typeof(Offset<>).MakeGenericType([tipo]);
-
-                    if (tipoGenerado == null) continue; // LOG (offset no ingresado al diccionario)
-
-                    try
-                    {
-                        // El único caso particular es STRING que debe recibir Lenght como parámetro
-
-                        if (item.DataType == "String")
+                        foreach (var kvp in aux)
                         {
+                            var item = kvp.Value;
 
-                            int len = item.Length == null ? 0 : (int)item.Length;
+                            if (string.IsNullOrWhiteSpace(item.DataType))
+                            {
+                                Debug.WriteLine($"[OffsetList.Load] Offset {kvp.Key} sin DataType");
+                                continue;
+                            }
 
-                            if (len == 0) throw new Exception("La longitud del STRING no puede ser 0");
+                            var type = Type.GetType($"System.{item.DataType}");
+                            if (type == null)
+                            {
+                                Debug.WriteLine($"[OffsetList.Load] Tipo inválido en {kvp.Key}: {item.DataType}");
+                                continue;
+                            }
 
-                            item.Offset = Activator.CreateInstance(tipoGenerado, [item.Address, len]);
+                            try
+                            {
+                                Type tipoGenerado = typeof(Offset<>).MakeGenericType(type);
+
+                                item.Offset = item.DataType == "String"
+                                    ? Activator.CreateInstance(tipoGenerado, new object[] { item.Address, item.Length ?? 0 })
+                                    : Activator.CreateInstance(tipoGenerado, new object[] { item.Address });
+
+                                _dictionary[kvp.Key] = item;
+                            }
+                            catch (Exception ex)
+                            {
+                                Debug.WriteLine($"[OffsetList.Load] Error creando Offset {kvp.Key}: {ex.Message}");
+                            }
                         }
-                        else
-                        {
-                            item.Offset = Activator.CreateInstance(tipoGenerado, [item.Address]);
-                        }
-
-                        Dictionary.Add(value.Key, item);
                     }
                     catch (Exception ex)
                     {
-                        Debug.WriteLine("Falló el ingreso del OFFSET al diccionario", ex.Message);
-                    } 
-
+                        Debug.WriteLine($"[OffsetList.Load] Error leyendo {filename}: {ex.Message}");
+                    }
                 }
-
             }
-
         }
-
-
-        //public string GetDataTypeString(string key) => Dictionary?[key]?.DataType ?? string.Empty;
-
 
         public dynamic? GetValue(string key)
         {
-            if (!Dictionary.TryGetValue(key, out OffsetItem? value)) return null;
-            if (value.Offset == null) return null;
-
-            float factor = Dictionary[key].Factor == null ? 1.0f : Convert.ToSingle(Dictionary[key].Factor);
-
-            switch (value.DataType)
+            lock (_lock)
             {
+                if (!_dictionary.TryGetValue(key, out var item))
+                    return null;
 
-                case "Byte":
-                    if (value.Offset is Offset<byte> offsetByte)
-                        return offsetByte.Value;
-                    break;
+                if (item.Offset == null)
+                    return null;
 
-                case "Int16":
-                    if (value.Offset is Offset<short> offsetShort)
-                        return offsetShort.Value * factor;
-                    break;
+                float factor = item.Factor ?? 1.0f;
 
-                case "UInt16":
-                    if (value.Offset is Offset<ushort> offsetUShort)
-                        return offsetUShort.Value * factor;
-                    break;
-
-                case "Int32":
-                    if (value.Offset is Offset<int> offsetInt32)
-                        return offsetInt32.Value * factor;
-                    break;
-
-                case "UInt32":
-                    if (value.Offset is Offset<uint> offsetUInt32)
-                        return offsetUInt32.Value * factor;
-                    break;
-
-                case "Single":
-                    if (value.Offset is Offset<float> offsetFloat)
-                        return offsetFloat.Value * factor;
-                    break;
-
-                case "Double":
-                    if (value.Offset is Offset<double> offsetDouble)
-                        return offsetDouble.Value * factor;
-                    break;
-
-                case "String":
-                    if (value.Offset is Offset<string> offsetString)
-                        return offsetString.Value;
-                    break;
+                return item.DataType switch
+                {
+                    "Byte" => (item.Offset as Offset<byte>)?.Value,
+                    "Int16" => (item.Offset as Offset<short>)?.Value * factor,
+                    "UInt16" => (item.Offset as Offset<ushort>)?.Value * factor,
+                    "Int32" => (item.Offset as Offset<int>)?.Value * factor,
+                    "UInt32" => (item.Offset as Offset<uint>)?.Value * factor,
+                    "Single" => (item.Offset as Offset<float>)?.Value * factor,
+                    "Double" => (item.Offset as Offset<double>)?.Value * factor,
+                    "String" => (item.Offset as Offset<string>)?.Value,
+                    _ => null
+                };
             }
-
-            return null;
         }
-
-        
-
     }
-
 }

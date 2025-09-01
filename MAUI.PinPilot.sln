@@ -23,6 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{02EA681E-C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{9FB97EB8-3DC8-43F0-BAB4-9304EDD80554}"
 	ProjectSection(SolutionItems) = preProject
+		Docs\controles simu.xml = Docs\controles simu.xml
 		Docs\FSUIPC4 Offsets Status.pdf = Docs\FSUIPC4 Offsets Status.pdf
 		Docs\P3D Controls.pdf = Docs\P3D Controls.pdf
 	EndProjectSection
@@ -32,6 +33,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "C172", "C172", "{183F7D7B-8
 		Docs\C172\A2A C172 Trainer - Variable list.pdf = Docs\C172\A2A C172 Trainer - Variable list.pdf
 		Docs\C172\C172 checklist.pdf = Docs\C172\C172 checklist.pdf
 		Docs\C172\Cessna172.pdf = Docs\C172\Cessna172.pdf
+		Docs\C172\tachometer_rg90.ino = Docs\C172\tachometer_rg90.ino
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PMDG 737NGX", "PMDG 737NGX", "{75C0B075-7AE4-45D5-A7F9-A1ADE626E9EB}"
@@ -65,8 +67,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAUI.PinPilot.Gauges", "MAU
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAUI.PinPilot.Main", "MAUI.PinPilot.Main\MAUI.PinPilot.Main.csproj", "{994F6092-9E0E-82A1-8F8C-152A395B115E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Discovery", "Discovery\Discovery.csproj", "{DE9DBC18-1F64-46C6-87FF-2B9C6DEF49AB}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -89,10 +89,6 @@ Global
 		{994F6092-9E0E-82A1-8F8C-152A395B115E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{994F6092-9E0E-82A1-8F8C-152A395B115E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{994F6092-9E0E-82A1-8F8C-152A395B115E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DE9DBC18-1F64-46C6-87FF-2B9C6DEF49AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DE9DBC18-1F64-46C6-87FF-2B9C6DEF49AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DE9DBC18-1F64-46C6-87FF-2B9C6DEF49AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DE9DBC18-1F64-46C6-87FF-2B9C6DEF49AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

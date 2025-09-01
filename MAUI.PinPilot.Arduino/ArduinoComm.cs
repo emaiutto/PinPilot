@@ -27,7 +27,7 @@ namespace MAUI.PinPilot.Arduino
         {
             // Defaults
             string defaultPort = "COM9";
-            int defaultBaud = 57600;
+            int defaultBaud = 115200;
             int defaultTimeout = 5000;
 
             try

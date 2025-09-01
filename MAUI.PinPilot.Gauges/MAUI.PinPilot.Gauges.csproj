@@ -28,25 +28,25 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MAUI.PinPilot.Fsuipc\MAUI.PinPilot.Fsuipc.csproj" />
+	<ProjectReference Include="..\MAUI.PinPilot.Fsuipc\MAUI.PinPilot.Fsuipc.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="MAUI.PinPilot.Arduino">
-      <HintPath>..\Libs\MAUI.PinPilot.Arduino.dll</HintPath>
-    </Reference>
-    <Reference Include="MAUI.PinPilot.Audio">
-      <HintPath>..\Libs\MAUI.PinPilot.Audio.dll</HintPath>
-    </Reference>
-    <Reference Include="MAUI.PinPilot.GeoTools">
-      <HintPath>..\Libs\MAUI.PinPilot.GeoTools.dll</HintPath>
-    </Reference>
-    <Reference Include="MAUI.PinPilot.Helpers">
-      <HintPath>..\Libs\MAUI.PinPilot.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="MAUI.PinPilot.MyExtensions">
-      <HintPath>..\Libs\MAUI.PinPilot.MyExtensions.dll</HintPath>
-    </Reference>
+	<Reference Include="MAUI.PinPilot.Arduino">
+	  <HintPath>..\Libs\MAUI.PinPilot.Arduino.dll</HintPath>
+	</Reference>
+	<Reference Include="MAUI.PinPilot.Audio">
+	  <HintPath>..\Libs\MAUI.PinPilot.Audio.dll</HintPath>
+	</Reference>
+	<Reference Include="MAUI.PinPilot.GeoTools">
+	  <HintPath>..\Libs\MAUI.PinPilot.GeoTools.dll</HintPath>
+	</Reference>
+	<Reference Include="MAUI.PinPilot.Helpers">
+	  <HintPath>..\Libs\MAUI.PinPilot.Helpers.dll</HintPath>
+	</Reference>
+	<Reference Include="MAUI.PinPilot.MyExtensions">
+	  <HintPath>..\Libs\MAUI.PinPilot.MyExtensions.dll</HintPath>
+	</Reference>
   </ItemGroup>
 
   <ItemGroup>
@@ -132,8 +132,8 @@
 
 	<ItemGroup>
 	  <None Update="Properties\Settings.settings">
-	    <Generator>SettingsSingleFileGenerator</Generator>
-	    <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+		<Generator>SettingsSingleFileGenerator</Generator>
+		<LastGenOutput>Settings.Designer.cs</LastGenOutput>
 	  </None>
 	</ItemGroup>
 	

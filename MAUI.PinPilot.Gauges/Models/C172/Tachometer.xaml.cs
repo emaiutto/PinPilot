@@ -2,6 +2,7 @@
 using FSUIPC;
 using MAUI.PinPilot.Arduino;
 using MAUI.PinPilot.Helpers;
+using MAUI.PinPilot.MyExtensions;
 
 namespace MAUI.PinPilot.Gauges.Models.C172
 {
@@ -13,9 +14,9 @@ namespace MAUI.PinPilot.Gauges.Models.C172
 
         private static readonly double SCALE = 0.7;
 
-        private const int ANGLE_DELTA = 1; // solo actualiza si el cambio supera 1 grado
+        private const int RPM_DELTA = 25;
 
-        private readonly ValueTracker _angleTracker = new(ANGLE_DELTA);
+        private readonly ValueTracker _rpmTracker = new(RPM_DELTA);
 
         private ArduinoSerialConnector? _arduino;
 
@@ -86,15 +87,15 @@ namespace MAUI.PinPilot.Gauges.Models.C172
             {
                 int rpm = (int)FSUIPCConnection.ReadLVar(ENGINE_RPM_LVAR);
 
-                //if (rpm < RPM_MIN || rpm > RPM_MAX)
-                //    return; // No es imprescindible esta validacion
+                if (!_rpmTracker.HasChanged(rpm)) return; // no se actualiza si el cambio es menor al delta
 
-                if (!_angleTracker.HasChanged(RpmTable.RpmToAngle[rpm]))
-                    return; // no se actualiza si el cambio es menor al delta
-                
-                needle.RenderTransform = Graph.GetTransformGroup(0, 0, _angleTracker.Current, SCALE);
 
-                _ = SafeSendAsync(rpm);
+                needle.RenderTransform = Graph.GetTransformGroup(0, 0, RpmTable.RpmToAngle[rpm], SCALE);
+
+
+                int angle = rpm.MapRange(0,2400,171,2);
+
+                _ = SafeSendAsync(angle);
 
             }
             catch (Exception ex)

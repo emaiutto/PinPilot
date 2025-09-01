@@ -77,7 +77,7 @@
 
         }
 
-        public int Current => _lastValue;
+        //public int Current => _lastValue;
     }
 
 }

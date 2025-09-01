@@ -22,6 +22,7 @@
 	<Compile Remove="FSUIPC\FlightSim.cs" />
 	<Compile Remove="FSUIPC\FsAltitude.cs" />
 	<Compile Remove="FSUIPC\FsVersion.cs" />
+	<Compile Remove="FSUIPC\LVarCollection.cs" />
 	<Compile Remove="FSUIPC\MSFSVariableServices.cs" />
 	<Compile Remove="FSUIPC\PMDG_737_NGX_Offsets.cs" />
 	<Compile Remove="FSUIPC\PMDG_747QOTSII_Offsets.cs" />

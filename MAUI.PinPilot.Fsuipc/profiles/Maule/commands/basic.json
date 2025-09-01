@@ -6,7 +6,12 @@
 	"MCP_ELEVATOR_TRIM_UP": { "Command": 65615 },
 	"MCP_ELEVATOR_TRIM_DW": { "Command": 65607 },
 
-	"AXIS_RUDDER_SET": { "Command": 65764 },
-	"AXIS_THROTTLE_SET": { "Command": 65765 }
+	"SideWinder_Button1_Pressed": { "Command": 65588 }, // BRAKES
+
+	"SideWinder_Button2_Pressed": { "Command": 65957 }, // FUEL SELECTOR LEFT
+
+	"SideWinder_Button3_Pressed": { "Command": 65956 }, // FUEL SELECTOR ALL
+
+	"SideWinder_Button4_Pressed": { "Command": 65958 }, // FUEL SELECTOR RIGHT
 
 }

@@ -219,24 +219,7 @@ public static class FSUIPCConnection
 			WriteInt(cur, 0);
 
 			// 5) Enviar mensaje
-			_ = Win32.SendMessageTimeout(connectionInfo.hWnd, connectionInfo.messageID, connectionInfo.atomFileName, IntPtr.Zero, SendMessageTimeoutFlags.SMTO_BLOCK, 2000u, out _);
-
-			//int retries = 0;
-			//while (Win32.SendMessageTimeout(
-			//           connectionInfo.hWnd,
-			//           connectionInfo.messageID,
-			//           connectionInfo.atomFileName,
-			//           IntPtr.Zero,
-			//           SendMessageTimeoutFlags.SMTO_BLOCK,
-			//           2000u,
-			//           out nint _) == IntPtr.Zero && retries++ < 10) { }
-
-			//if (retries >= 10)
-			//{
-			//	if (Marshal.GetLastWin32Error() == 0)
-			//		throw new FSUIPCException(FSUIPCError.FSUIPC_ERR_TIMEOUT, "SendMessage timed-out after 10 attempts.");
-			//	throw new FSUIPCException(FSUIPCError.FSUIPC_ERR_SENDMSG, "Error sending message to FSUIPC.");
-			//}
+			_ = Win32.SendMessageTimeout(connectionInfo.hWnd, connectionInfo.messageID, connectionInfo.atomFileName, IntPtr.Zero, SendMessageTimeoutFlags.SMTO_BLOCK, 1000u, out _);
 
 			// 6) Leer resultados
 			for (int i = 0; i < n; i++)

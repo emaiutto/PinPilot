@@ -1,47 +1,55 @@
-﻿using System.Runtime.CompilerServices;
+﻿using FSUIPC;
 using MAUI.PinPilot.Helpers;
+using MAUI.PinPilot.MyExtensions;
 using MAUI.PinPilot.TinyHIDLibrary;
 
 namespace MAUI.PinPilot.Devices
 {
 
-    public sealed class SideWinder : HidDeviceId, IDisposable
+    public sealed class SideWinder : IDisposable
     {
 
-        private readonly HidReader? Reader00;
+        // AILERON
+        private readonly Offset<short> _offset_aileron = new(0x0BB6); // (signed 16-bit, -16383..16383)
 
+        private readonly AnalogController _axis_aileron 
+            = new(axisRawMin: 0, axisRawMax: 255, axisRangeMin: -16383, axisRangeMax: 16383, alpha: 0.9f, delta: 256, deadZone: 2048);
 
-        //private AnalogController _rudderProcessor = new(dead_zone: 2048, axis_raw_min: -130, axis_raw_max: 295, alpha: 0.9f, delta: 256);
+        // ELEVATOR
+        private readonly Offset<short> _offset_elevator = new(0x0BB2); // (signed 16-bit, -16383..16383)
 
-        //private AnalogController _throttleProcessor = new(dead_zone: 0, axis_raw_min: 905, axis_raw_max: 7, alpha: 0.9f, delta: 256);
+        private readonly AnalogController _axis_elevator 
+            = new(axisRawMin: 0, axisRawMax: 255, axisRangeMin: -16383, axisRangeMax: 16383, alpha: 0.9f, delta: 256, deadZone: 2048);
+
+        
+        
+        // THROTTLE (temporal en este control para test)
+
+        private readonly Offset<short> _offset_throttle = new(0x089A); // –4096 +16384 (segun documentacion)
+
+        private readonly AnalogController _axis_mixture 
+            = new(axisRawMin: 0, axisRawMax: 255, axisRangeMin: -4096, axisRangeMax: 16383, alpha: 0.9f, delta: 32, inverted: true);
 
 
 
         private readonly ButtonEdgeTracker _tracker = new();
 
+        private readonly HidReader? Reader00;
 
 
-        #region Events
-         
-        public delegate void BufferUpdateHandler(byte[] buffer);
-        public event BufferUpdateHandler? BufferUpdate;
+        #region Button Events
 
         public event Handler? Button1_Pressed;
         public event Handler? Button2_Pressed;
         public event Handler? Button3_Pressed;
-        public event Handler? Button4_Pressed; 
-
+        public event Handler? Button4_Pressed;
 
         #endregion
 
-        public SideWinder(int vendorId, int productId)
-        {
-           
-            Reader00 = new HidReader(vendorId, productId, OnReport00);
-            
-            Reader00.Start();
- 
-        }
+
+        public SideWinder(int vendorId, int productId) => Reader00 = new HidReader(vendorId, productId, OnReport00, delayMs: 0);
+
+        public void Start() => Reader00?.Start();
 
 
         private Task OnReport00()
@@ -49,28 +57,41 @@ namespace MAUI.PinPilot.Devices
 
             if (Reader00?.Device == null) return Task.CompletedTask;
 
-
             var buffer = Reader00.Device.InputBuffer;
 
 
-            BufferUpdate?.Invoke(buffer);
+            _axis_aileron.Process(buffer[1]);
+            
+            _axis_elevator.Process(buffer[2]);
+            
+            _axis_mixture.Process(buffer[4]);
 
 
-            //if (_tracker.CheckRisingEdge(nameof(Button1_Pressed), buffer[9].IsBitSet(0))) Button1_Pressed?.Invoke();
 
-            //if (_tracker.CheckRisingEdge(nameof(Button2_Pressed), buffer[9].IsBitSet(0))) Button2_Pressed?.Invoke();
+            byte buttons = buffer[5];
 
-            //if (_tracker.CheckRisingEdge(nameof(Button3_Pressed), buffer[9].IsBitSet(0))) Button3_Pressed?.Invoke();
+            if (_tracker.CheckRisingEdge(nameof(Button1_Pressed), buttons.IsBitSet(5))) Button1_Pressed?.Invoke();
 
-            //if (_tracker.CheckRisingEdge(nameof(Button4_Pressed), buffer[9].IsBitSet(0))) Button4_Pressed?.Invoke();
+            if (_tracker.CheckRisingEdge(nameof(Button2_Pressed), buttons.IsBitSet(0))) Button2_Pressed?.Invoke();
 
+            if (_tracker.CheckRisingEdge(nameof(Button3_Pressed), buttons.IsBitSet(3))) Button3_Pressed?.Invoke();
 
-            //_rudderProcessor.ProcessRawRudder(Get10BitSigned(((buffer[4] >> 6) | (buffer[5] << 2)) & 0x3FF));
+            if (_tracker.CheckRisingEdge(nameof(Button4_Pressed), buttons.IsBitSet(2))) Button4_Pressed?.Invoke();
+
 
             return Task.CompletedTask;
         }
 
+
  
+        public void UpdateControls()
+        {
+            _offset_aileron.Value = _axis_aileron.Value;
+            
+            _offset_elevator.Value = _axis_elevator.Value;
+
+            _offset_throttle.Value = _axis_mixture.Value;    // TEMPORAL
+        }
 
 
 
@@ -85,10 +106,6 @@ namespace MAUI.PinPilot.Devices
         }
 
         #endregion
-
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static int Get10BitSigned(int raw) => (raw & 0x200) != 0 ? raw | unchecked((int)0xFFFFFC00) : raw;
 
 
     }

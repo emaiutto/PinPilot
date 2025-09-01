@@ -25,8 +25,8 @@
         "SRR": [ "NAV1_RADIO_FRACT_INC" ],
         "SRL": [ "NAV1_RADIO_FRACT_DEC" ],
         "BTN": [ "NAV1_RADIO_SWAP" ],
-        "DSL": [ "TrueHeading", "000", "" ],
-        "DSR": [ "Altimetro", "0", "" ],
+        "DSL": [ "NAV1_Active", "000.00", "" ],
+        "DSR": [ "NAV1_StandBy", "000.00", "" ],
     },
 
     "3": {
@@ -60,12 +60,12 @@
     },
 
     "6": {
-        "BRR": [ "NAV1_RADIO_WHOLE_INC" ],
-        "BRL": [ "NAV1_RADIO_WHOLE_DEC" ],
-        "SRR": [ "NAV1_RADIO_FRACT_INC" ],
-        "SRL": [ "NAV1_RADIO_FRACT_DEC" ],
-        "BTN": [ "NAV1_RADIO_SWAP" ],
-        "DSL": [ "Eng1_RPM", "0", "" ],
-        "DSR": [ "Eng1_RPM", "0", "" ],
+        "BRR": [ ],
+        "BRL": [ ],
+        "SRR": [ ],
+        "SRL": [ ],
+        "BTN": [ ],
+        "DSL": [ "FuelLeftWingTank", "0.0", "LeftFuelSelC172" ],
+        "DSR": [ "FuelRightWingTank", "0.0", "RightFuelSelC172" ],
     }
 }

@@ -13,4 +13,10 @@
     <ProjectReference Include="..\MAUI.PinPilot.Devices\MAUI.PinPilot.Devices.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="MAUI.PinPilot.TinyHIDLibrary">
+      <HintPath>..\Libs\MAUI.PinPilot.TinyHIDLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

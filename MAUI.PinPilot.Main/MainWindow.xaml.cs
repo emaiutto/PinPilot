@@ -22,7 +22,7 @@ namespace MauiSoft.SRP
 
     public static class SIMU
     {
-        public static bool Has(string key) => FSUIPCHelper.Instance.ContainsKey(key);
+        public static bool Has(string key) => FSUIPCHelper.Instance.Dictionary.ContainsKey(key);
     }
 
      
@@ -143,13 +143,21 @@ namespace MauiSoft.SRP
 
                 labelstatus1.Content = $"{Profile.Instance.AircraftDescription}";
 
+
+                sideWinder?.Start();
+                TrySuscribeEvents_SideWinder();
+
+
                 MCP?.Start();
+                TrySuscribeEvents_ROF();
+
 
                 RadioPanel?.Start();
+                TrySuscribeEvents_RadioPanel();
+
 
                 LoadGauges();
-
-                SuscribirEventos();
+                                
 
                 fastGaugesTimer.Tick += FastGaugesTimer_Tick;
                 fastGaugesTimer.Start();
@@ -169,6 +177,11 @@ namespace MauiSoft.SRP
         {
             try
             {
+
+                sideWinder?.UpdateControls();
+
+                MCP?.UpdateControls();
+
                 FSUIPCConnection.Process("");
 
                 RadioPanel?.Update();
@@ -193,7 +206,7 @@ namespace MauiSoft.SRP
                 foreach (var control in slowGauges) control.InvalidateVisual();
 
                 var flapspos = FSUIPCConnection.ReadLVar("LandFlapsPos");
-                Debug.WriteLine($"{flapspos}");
+                //Debug.WriteLine($"{flapspos}");
 
             }
             catch (Exception ex)
@@ -405,9 +418,8 @@ namespace MauiSoft.SRP
  
 
 
-        private void SuscribirEventos()
+        private void TrySuscribeEvents_ROF()
         {
-      
             if (MCP == null) return;
 
             if (SIMU.Has("MCP_AT_BUTTON")) MCP.AT_BUTTON += MCP_AT_BUTTON;
@@ -447,20 +459,18 @@ namespace MauiSoft.SRP
             if (SIMU.Has("MCP_ELEVATOR_TRIM_UP")) MCP.ELEVATOR_TRIM_UP += MCP_ELEVATOR_TRIM_UP;
             if (SIMU.Has("MCP_ELEVATOR_TRIM_DW")) MCP.ELEVATOR_TRIM_DW += MCP_ELEVATOR_TRIM_DW;
 
-
             if (SIMU.Has("MCP_FlapsUp")) MCP.FlapsUp += MCP_FlapsUp;
             if (SIMU.Has("MCP_FlapsDown")) MCP.FlapsDown += MCP_FlapsDown;
 
-            if (SIMU.Has("GearController_GearUp"))
-                MCP.gearController.GearUp += GearController_GearUp;
+            if (SIMU.Has("GearController_GearUp")) MCP.gearController.GearUp += GearController_GearUp;
+            if (SIMU.Has("GearController_GearDown")) MCP.gearController.GearDown += GearController_GearDown;
+            if (SIMU.Has("GearController_GearLocked")) MCP.gearController.GearLocked += GearController_GearLocked;
 
-            if (SIMU.Has("GearController_GearDown"))
-                MCP.gearController.GearDown += GearController_GearDown;
+        }
 
-            if (SIMU.Has("GearController_GearLocked"))
-                MCP.gearController.GearLocked += GearController_GearLocked;
- 
-       
+
+        private void TrySuscribeEvents_RadioPanel()
+        {
             if (RadioPanel == null) return;
 
             RadioPanel.EnconderB1R += SaitekRadioPanel_EnconderB1R;
@@ -474,14 +484,36 @@ namespace MauiSoft.SRP
 
             RadioPanel.EnconderS2R += SaitekRadioPanel_EnconderS2R;
             RadioPanel.EnconderS2L += SaitekRadioPanel_EnconderS2L;
-
+        
             RadioPanel.Buttons1 += SaitekRadioPanel_Buttons1;
             RadioPanel.Buttons2 += SaitekRadioPanel_Buttons2;
- 
-
-
-
         }
+
+
+
+        #region SideWinder Events
+        private void TrySuscribeEvents_SideWinder()
+        {
+
+            if (sideWinder == null) return;
+
+            sideWinder.Button1_Pressed += SideWinder_Button1_Pressed;
+
+            sideWinder.Button2_Pressed += SideWinder_Button2_Pressed;
+
+            sideWinder.Button3_Pressed += SideWinder_Button3_Pressed;
+
+            sideWinder.Button4_Pressed += SideWinder_Button4_Pressed;
+        }
+
+
+        private void SideWinder_Button1_Pressed() => Run(times: 5);
+        private void SideWinder_Button2_Pressed() => Run();
+        private void SideWinder_Button3_Pressed() => Run();
+        private void SideWinder_Button4_Pressed() => Run();
+        
+        #endregion
+
 
         private void GearController_GearLocked() => Run();
 
